@@ -13,6 +13,10 @@
 		8D3BE98A1EEA681B001C8E2F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8D3BE9881EEA681B001C8E2F /* Main.storyboard */; };
 		8D3BE98C1EEA681B001C8E2F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8D3BE98B1EEA681B001C8E2F /* Assets.xcassets */; };
 		8D3BE98F1EEA681B001C8E2F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8D3BE98D1EEA681B001C8E2F /* LaunchScreen.storyboard */; };
+		8D3BE99A1EEA6905001C8E2F /* PlayerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3BE9991EEA6905001C8E2F /* PlayerController.m */; };
+		8D3BE99D1EEA692F001C8E2F /* PlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3BE99C1EEA692F001C8E2F /* PlayView.m */; };
+		8D3BE9A11EEA6958001C8E2F /* PlayViewControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3BE99F1EEA6958001C8E2F /* PlayViewControl.m */; };
+		8D3BE9A21EEA6958001C8E2F /* PlayViewControl.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8D3BE9A01EEA6958001C8E2F /* PlayViewControl.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +30,13 @@
 		8D3BE98B1EEA681B001C8E2F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8D3BE98E1EEA681B001C8E2F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8D3BE9901EEA681B001C8E2F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8D3BE9981EEA6905001C8E2F /* PlayerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerController.h; sourceTree = "<group>"; };
+		8D3BE9991EEA6905001C8E2F /* PlayerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerController.m; sourceTree = "<group>"; };
+		8D3BE99B1EEA692F001C8E2F /* PlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayView.h; sourceTree = "<group>"; };
+		8D3BE99C1EEA692F001C8E2F /* PlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayView.m; sourceTree = "<group>"; };
+		8D3BE99E1EEA6958001C8E2F /* PlayViewControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayViewControl.h; sourceTree = "<group>"; };
+		8D3BE99F1EEA6958001C8E2F /* PlayViewControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayViewControl.m; sourceTree = "<group>"; };
+		8D3BE9A01EEA6958001C8E2F /* PlayViewControl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlayViewControl.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +69,7 @@
 		8D3BE97E1EEA681B001C8E2F /* LTVideoPlayer */ = {
 			isa = PBXGroup;
 			children = (
+				8D3BE9971EEA68DC001C8E2F /* VideoPlayer */,
 				8D3BE9821EEA681B001C8E2F /* AppDelegate.h */,
 				8D3BE9831EEA681B001C8E2F /* AppDelegate.m */,
 				8D3BE9851EEA681B001C8E2F /* ViewController.h */,
@@ -77,6 +89,20 @@
 				8D3BE9801EEA681B001C8E2F /* main.m */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		8D3BE9971EEA68DC001C8E2F /* VideoPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				8D3BE9981EEA6905001C8E2F /* PlayerController.h */,
+				8D3BE9991EEA6905001C8E2F /* PlayerController.m */,
+				8D3BE99B1EEA692F001C8E2F /* PlayView.h */,
+				8D3BE99C1EEA692F001C8E2F /* PlayView.m */,
+				8D3BE99E1EEA6958001C8E2F /* PlayViewControl.h */,
+				8D3BE99F1EEA6958001C8E2F /* PlayViewControl.m */,
+				8D3BE9A01EEA6958001C8E2F /* PlayViewControl.xib */,
+			);
+			path = VideoPlayer;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -139,6 +165,7 @@
 			files = (
 				8D3BE98F1EEA681B001C8E2F /* LaunchScreen.storyboard in Resources */,
 				8D3BE98C1EEA681B001C8E2F /* Assets.xcassets in Resources */,
+				8D3BE9A21EEA6958001C8E2F /* PlayViewControl.xib in Resources */,
 				8D3BE98A1EEA681B001C8E2F /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -150,9 +177,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8D3BE9A11EEA6958001C8E2F /* PlayViewControl.m in Sources */,
 				8D3BE9871EEA681B001C8E2F /* ViewController.m in Sources */,
 				8D3BE9841EEA681B001C8E2F /* AppDelegate.m in Sources */,
+				8D3BE99A1EEA6905001C8E2F /* PlayerController.m in Sources */,
 				8D3BE9811EEA681B001C8E2F /* main.m in Sources */,
+				8D3BE99D1EEA692F001C8E2F /* PlayView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
