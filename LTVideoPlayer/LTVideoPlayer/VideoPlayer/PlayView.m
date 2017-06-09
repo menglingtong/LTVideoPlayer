@@ -283,20 +283,20 @@ typedef NS_ENUM(NSUInteger, LTPanState) {
  */
 - (void)didClickedFullScreenButton:(UIButton *)button
 {
+    
     button.selected = !button.selected;
-    
-    NSLog(@"%d", button.selected);
-    
-    if (button.selected) {
+    if(button.selected){
         
         // 从非全屏状态进入全屏状态
         [self.playViewControl.fullScreenBtn setImage:[UIImage imageNamed:@"playerExitFullScreen"] forState:UIControlStateNormal];
-        
-        
-    } else {
+        [self changeOrientation:UIInterfaceOrientationLandscapeRight];
+        [self setFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
+    }else{
         
         // 从全屏状态进入非全屏状态
         [self.playViewControl.fullScreenBtn setImage:[UIImage imageNamed:@"playerFullScreen"] forState:UIControlStateNormal];
+        [self changeOrientation:UIInterfaceOrientationPortrait];
+        [self setFrame:_tmpRect];
     }
 }
 
@@ -521,6 +521,8 @@ typedef NS_ENUM(NSUInteger, LTPanState) {
     
     if (playerItem) {
         
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playbackFinished:) name:AVPlayerItemDidPlayToEndTimeNotification object:_playerItem];
+        
         [playerItem addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew context:nil];
         
         [playerItem addObserver:self forKeyPath:@"loadedTimeRanges" options:NSKeyValueObservingOptionNew context:nil];
@@ -718,6 +720,21 @@ typedef NS_ENUM(NSUInteger, LTPanState) {
     }
 }
 
+/**
+ *  播放完成通知
+ *
+ *  @param notification 通知对象
+ */
+-(void)playbackFinished:(NSNotification *)notification{
+    NSLog(@"视频播放完成.");
+    
+    
+    // 播放完成后重复播放
+    // 跳到最新的时间点开始播放
+    [_player seekToTime:CMTimeMake(0, 1)];
+    
+    [_player play];
+}
 
 /**
  *  监听播放进度
@@ -883,46 +900,6 @@ typedef NS_ENUM(NSUInteger, LTPanState) {
 }
 
 #pragma mark --------- ButtonClike ---------
-
-/**
- *  播放按钮
- */
-
-- (void)startAction:(UIButton *)senderBtn
-{
-    senderBtn.selected = !senderBtn.selected;
-    if(senderBtn.selected){
-        // 播放时显示暂停按钮
-        [self.playViewControl.playBtn setImage:[UIImage imageNamed:@"tipsPlayerPause"] forState:UIControlStateNormal];
-        
-        [self play];
-    }else{
-        // 暂停时显示播放按钮
-        [self.playViewControl.playBtn setImage:[UIImage imageNamed:@"tipsPlayerPlay"] forState:UIControlStateNormal];
-        
-        [self pause];
-    }
-}
-
-
-/**
- *  全屏按钮
- */
-- (void)fullScreenAction:(UIButton *)senderBtn
-{
-    senderBtn.selected = !senderBtn.selected;
-    if(senderBtn.selected){
-        
-        [self.playViewControl.fullScreenBtn setImage:[UIImage imageNamed:@"tipsPlayerExitFullScreen"] forState:UIControlStateNormal];
-        [self changeOrientation:UIInterfaceOrientationLandscapeRight];
-        [self setFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
-    }else{
-        
-        [self.playViewControl.fullScreenBtn setImage:[UIImage imageNamed:@"tipsPlayerFullScreen"] forState:UIControlStateNormal];
-        [self changeOrientation:UIInterfaceOrientationPortrait];
-        [self setFrame:_tmpRect];
-    }
-}
 /**
  *  强制改变屏幕方向
  */
