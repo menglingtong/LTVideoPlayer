@@ -72,44 +72,6 @@
     return _playView;
 }
 
-//- (void)setUrl:(NSString *)url
-//{
-//    if (_url != url) {
-//        
-//        _url = [url copy];
-//        
-//    }
-//    
-//    _playView.url = _url;
-//    
-//    
-//    
-//    _playView.delegate = self;
-//    
-//    _playView.playerLayerGravity = LTPlayerLayerGravityResizeAspectFill;
-//    
-//    [self.view addSubview:_playView];
-//    
-//}
-//
-//- (PlayView *)playView
-//{
-//    
-//    VideoInfo videoInfo = [self getVideoInfoWithSourceUrl:self.url];
-//    
-//    CGFloat height = videoInfo.videoHeight / videoInfo.videoWidth * [UIScreen mainScreen].bounds.size.width * 1.0;
-//    
-//    if (!_playView) {
-//        
-//        _playView = [[PlayView alloc] initWithFrame:CGRectMake(0, 100, [UIScreen mainScreen].bounds.size.width, height)];
-//        
-//    }
-//    
-//    _playView.videoInfo = videoInfo;
-//    
-//    return _playView;
-//}
-
 
 /**
  *  重写初始化方法

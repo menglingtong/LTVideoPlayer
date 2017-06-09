@@ -43,6 +43,8 @@ typedef NS_ENUM(NSUInteger, LTPanState) {
 
 @property (nonatomic, strong) AVPlayerLayer *playerLayer;
 
+/** 视频播放时间观察者 */
+@property (strong, nonatomic) id timeObserver;
 
 /** 播放器控制层 */
 @property (nonatomic, strong) PlayViewControl *playViewControl;
@@ -68,6 +70,12 @@ typedef NS_ENUM(NSUInteger, LTPanState) {
 
 /** 快进快退时间 */
 @property (nonatomic,assign) CGFloat tmpTime;
+
+/** AB循环 A点时间 */
+@property (nonatomic, assign) CGFloat aTime;
+
+/** AB循环 B点时间 */
+@property (nonatomic, assign) CGFloat bTime;
 
 /**
  开始播放
@@ -101,8 +109,6 @@ typedef NS_ENUM(NSUInteger, LTPanState) {
         
         _tmpRect = frame;
         
-        
-        
         // 初始化触摸事件
         [self createGesture];
         
@@ -134,7 +140,8 @@ typedef NS_ENUM(NSUInteger, LTPanState) {
     // 添加控制按钮点击事件
     [self addNotification];
     
-    
+    // 监听播放时间
+    [self addProgressObserver];
     
 }
 
@@ -264,17 +271,44 @@ typedef NS_ENUM(NSUInteger, LTPanState) {
 
 
 /**
- AB循环点击方法
+ AB循环点击方法 获取A点时间
  
  @param button AB循环按钮
  */
-- (void)didClickedCutButton:(UIButton *)button
+- (void)didClickedCutAPointButton:(UIButton *)button
 {
-    NSLog(@"要剪切了哦！");
+    NSLog(@"获取A点时间");
+    _aTime =  self.player.currentTime.value / self.player.currentTime.timescale;
     
+    NSLog(@"当前时间为A时间 ： %f", _aTime);
+}
+
+/**
+ AB循环点击方法 获取B点时间
+ 
+ @param button AB循环按钮
+ */
+- (void)didClickedCutBPointButton:(UIButton *)button
+{
+    NSLog(@"获取B点时间");
+    _bTime =  self.player.currentTime.value / self.player.currentTime.timescale;
     
+    NSLog(@"当前时间为B时间 ： %f", _bTime);
+    
+    [self videoLoopAtAPointTimeToBPointTime];
+}
+
+- (void)videoLoopAtAPointTimeToBPointTime
+{
+    CMTime aPointTime = CMTimeMake(_aTime, 1);
+    
+    CMTime bPointTime = CMTimeMake(_bTime, 1);
+    
+    [self.player seekToTime:aPointTime];
     
 }
+
+
 
 /**
  全屏按钮点击方法
@@ -314,7 +348,7 @@ typedef NS_ENUM(NSUInteger, LTPanState) {
     // 返回按钮点击方法
     [self.playViewControl.backBtn addTarget:self action:@selector(didClickedBackButton:) forControlEvents:UIControlEventTouchUpInside];
     
-    // 播放按钮点击方法
+    // 播放按钮点击方法 按下的方法
     [self.playViewControl.playBtn addTarget:self action:@selector(didClickedPlayButton:) forControlEvents:UIControlEventTouchUpInside];
     
     // 镜像按钮点击方法
@@ -323,8 +357,11 @@ typedef NS_ENUM(NSUInteger, LTPanState) {
     // 慢速按钮点击方法
     [self.playViewControl.slowBtn addTarget:self action:@selector(didClickedSlowButton:) forControlEvents:UIControlEventTouchUpInside];
     
-    // AB循环按钮点击方法
-    [self.playViewControl.cutBtn addTarget:self action:@selector(didClickedCutButton:) forControlEvents:UIControlEventTouchUpInside];
+    // AB循环按钮点击方法 抬起获取B点时间
+    [self.playViewControl.cutBtn addTarget:self action:@selector(didClickedCutBPointButton:) forControlEvents:UIControlEventTouchUpInside];
+    
+    // AB循环按钮点击方法 按下获取A点时间
+    [self.playViewControl.cutBtn addTarget:self action:@selector(didClickedCutAPointButton:) forControlEvents:UIControlEventTouchDown];
     
     // 全屏按钮
     [self.playViewControl.fullScreenBtn addTarget:self action:@selector(didClickedFullScreenButton:) forControlEvents:UIControlEventTouchUpInside];
@@ -600,6 +637,16 @@ typedef NS_ENUM(NSUInteger, LTPanState) {
     return _playViewControl;
 }
 
+- (void)setVideoInfo:(VideoInfo)videoInfo
+{
+    _videoInfo = videoInfo;
+    
+    _aTime = 0;
+    
+    _bTime = videoInfo.totalTime;
+    
+}
+
 #pragma mark --------- slider事件处理 ---------
 - (void)touchDownSlider:(UISlider *)slider
 {
@@ -787,6 +834,32 @@ typedef NS_ENUM(NSUInteger, LTPanState) {
     // 计算缓冲总进度
     NSTimeInterval result     = startSeconds + durationSeconds;
     return result;
+}
+
+#pragma mark - KVO
+- (void)addProgressObserver
+{
+    
+    AVPlayerItem *playerItem = self.player.currentItem;
+    //这里设置每秒执行一次
+    __weak __typeof(self) weakself = self;
+    
+    self.timeObserver = [_player addPeriodicTimeObserverForInterval:CMTimeMake(1.0, 1.0) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
+        
+        float current = CMTimeGetSeconds(time);
+        
+        float total = CMTimeGetSeconds([playerItem duration]);
+        
+        NSLog(@"当前已经播放%f",current);
+        NSLog(@"总时长 = %f", weakself.bTime);
+        
+        if ((int)current == (int)weakself.bTime) {
+            
+            [weakself videoLoopAtAPointTimeToBPointTime];
+            
+        }
+    }];
+    
 }
 
 
