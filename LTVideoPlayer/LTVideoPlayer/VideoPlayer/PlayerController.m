@@ -62,7 +62,7 @@
  */
 - (void)initUI{
     
-    VideoInfo videoInfo = [self getVideoInfoWithSourceUrl:@"http://baobab.wdjcdn.com/145345719887961975219.mp4"];
+    VideoInfo videoInfo = [self getVideoInfoWithSourceUrl:@"http://baobab.wdjcdn.com/1461897495660000111.mp4"];
     
     CGFloat height = videoInfo.videoHeight / videoInfo.videoWidth * [UIScreen mainScreen].bounds.size.width * 1.0;
     

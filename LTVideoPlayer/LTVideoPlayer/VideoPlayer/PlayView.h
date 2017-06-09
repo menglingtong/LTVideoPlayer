@@ -16,6 +16,14 @@ typedef struct
     
 } VideoInfo;
 
+
+typedef NS_ENUM(NSUInteger, LTPlayerLayerGravity) {
+    LTPlayerLayerGravityResize,           // 非均匀模式
+    LTPlayerLayerGravityResizeAspect,     // 等比例填充
+    LTPlayerLayerGravityResizeAspectFill  // 等比例填充(维度会被裁剪)
+};
+
+
 @protocol PlayViewDelegate <NSObject>
 
 
@@ -25,6 +33,8 @@ typedef struct
 @interface PlayView : UIView
 
 @property (nonatomic, assign) id<PlayViewDelegate> delegate;
+
+@property (nonatomic, assign) LTPlayerLayerGravity playerLayerGravity;
 
 @property (nonatomic, assign) VideoInfo videoInfo;
 
