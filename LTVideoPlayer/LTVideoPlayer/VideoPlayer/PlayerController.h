@@ -10,4 +10,8 @@
 
 @interface PlayerController : UIViewController
 
+@property (nonatomic, copy) NSString *url;
+
++ (instancetype)shareInstance;
+
 @end
