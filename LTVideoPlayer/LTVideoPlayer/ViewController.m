@@ -8,6 +8,8 @@
 
 #import "ViewController.h"
 
+#import "PlayerController.h"
+
 @interface ViewController ()
 
 @end

@@ -99,7 +99,9 @@ typedef NS_ENUM(NSUInteger, LTPanState) {
         
         _startFrame = frame;
         
-        [self initUI];
+        _tmpRect = frame;
+        
+        
         
         // 初始化触摸事件
         [self createGesture];
@@ -108,6 +110,8 @@ typedef NS_ENUM(NSUInteger, LTPanState) {
         [self getVolumeOfSystem];
         
         [self play];
+        
+        self.backgroundColor = [UIColor redColor];
         
     }
     
@@ -214,13 +218,13 @@ typedef NS_ENUM(NSUInteger, LTPanState) {
     if (button.selected) {
         
         // 从播放状态转入暂停状态
-        [self.playViewControl.playBtn setImage:[UIImage imageNamed:@"playerPlay"] forState:UIControlStateNormal];
+        [self.playViewControl.playBtn setImage:[UIImage imageNamed:@"play"] forState:UIControlStateNormal];
         [self pause];
         
     } else {
         
         // 从暂停状态转入播放状态
-        [self.playViewControl.playBtn setImage:[UIImage imageNamed:@"playerPause"] forState:UIControlStateNormal];
+        [self.playViewControl.playBtn setImage:[UIImage imageNamed:@"pause"] forState:UIControlStateNormal];
         [self play];
     }
 }
@@ -540,7 +544,7 @@ typedef NS_ENUM(NSUInteger, LTPanState) {
     
     [self addNotification];
     
-    [self initPlayerView];
+    [self initUI];
 }
 
 -(void)setState:(LTPlayerState)state
@@ -834,8 +838,13 @@ typedef NS_ENUM(NSUInteger, LTPanState) {
     }
     
     [UIView animateWithDuration:0.25f animations:^{
-        self.playViewControl.bottomBackView.alpha = 1;
-        self.playViewControl.topBackView.alpha = 1;
+        self.playViewControl.bottomBackView.alpha = 0.5;
+        self.playViewControl.topBackView.alpha = 0.5;
+        
+        _playViewControl.assistView.alpha = 0.5;
+        
+        _playViewControl.lockBtn.alpha = 0.5;
+        
     } completion:^(BOOL finished) {
         self.isPlayControlShow = YES;
         [self autoHiddenControllView];
@@ -862,6 +871,11 @@ typedef NS_ENUM(NSUInteger, LTPanState) {
     [UIView animateWithDuration:0.25f animations:^{
         self.playViewControl.bottomBackView.alpha = 0;
         self.playViewControl.topBackView.alpha = 0;
+        
+        _playViewControl.assistView.alpha = 0;
+        
+        _playViewControl.lockBtn.alpha = 0;
+        
     } completion:^(BOOL finished) {
         self.isPlayControlShow = NO;
     }];

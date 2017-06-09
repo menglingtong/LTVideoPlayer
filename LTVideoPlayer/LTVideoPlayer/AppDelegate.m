@@ -8,6 +8,8 @@
 
 #import "AppDelegate.h"
 
+#import "PlayerController.h"
+
 @interface AppDelegate ()
 
 @end
@@ -17,6 +19,18 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+    self.window = [[UIWindow alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
+    
+    [self.window makeKeyAndVisible];
+    
+    PlayerController *player = [PlayerController shareInstance];
+    
+    player.url = @"http://baobab.wdjcdn.com/145345719887961975219.mp4";
+    
+    self.window.rootViewController = player;
+    
+    
     return YES;
 }
 

@@ -12,7 +12,7 @@
 
 #import <AVFoundation/AVFoundation.h>
 
-@interface PlayerController ()
+@interface PlayerController ()<PlayViewDelegate>
 
 @property (nonatomic, strong) PlayView *playView;
 
@@ -33,10 +33,82 @@
         
         manager = [[PlayerController alloc] init];
         
+        
+        
     });
     
     return manager;
 }
+
+- (void)setUrl:(NSString *)url
+{
+    if (_url != url) {
+        
+        _url = [url copy];
+        
+    }
+    
+    self.playView.url = _url;
+    
+    VideoInfo videoInfo = [self getVideoInfoWithSourceUrl:_url];
+    
+     self.playView.videoInfo = videoInfo;
+    
+    [self.view addSubview:self.playView];
+}
+
+- (PlayView *)playView
+{
+    if (!_playView) {
+        
+        _playView = [[PlayView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 300)];
+        
+    }
+    
+    _playView.delegate = self;
+    
+    _playView.playerLayerGravity = LTPlayerLayerGravityResizeAspectFill;
+    
+    return _playView;
+}
+
+//- (void)setUrl:(NSString *)url
+//{
+//    if (_url != url) {
+//        
+//        _url = [url copy];
+//        
+//    }
+//    
+//    _playView.url = _url;
+//    
+//    
+//    
+//    _playView.delegate = self;
+//    
+//    _playView.playerLayerGravity = LTPlayerLayerGravityResizeAspectFill;
+//    
+//    [self.view addSubview:_playView];
+//    
+//}
+//
+//- (PlayView *)playView
+//{
+//    
+//    VideoInfo videoInfo = [self getVideoInfoWithSourceUrl:self.url];
+//    
+//    CGFloat height = videoInfo.videoHeight / videoInfo.videoWidth * [UIScreen mainScreen].bounds.size.width * 1.0;
+//    
+//    if (!_playView) {
+//        
+//        _playView = [[PlayView alloc] initWithFrame:CGRectMake(0, 100, [UIScreen mainScreen].bounds.size.width, height)];
+//        
+//    }
+//    
+//    _playView.videoInfo = videoInfo;
+//    
+//    return _playView;
+//}
 
 
 /**
@@ -62,17 +134,6 @@
  */
 - (void)initUI{
     
-    VideoInfo videoInfo = [self getVideoInfoWithSourceUrl:@"http://baobab.wdjcdn.com/1461897495660000111.mp4"];
-    
-    CGFloat height = videoInfo.videoHeight / videoInfo.videoWidth * [UIScreen mainScreen].bounds.size.width * 1.0;
-    
-    NSLog(@"视频视频总时长：%ld", videoInfo.totalTime);
-    
-    _playView = [[PlayView alloc] initWithFrame:CGRectMake(0, 100, [UIScreen mainScreen].bounds.size.width, height)];
-    
-    _playView.videoInfo = videoInfo;
-    
-    [self.view addSubview:_playView];
     
     self.view.backgroundColor = [UIColor whiteColor];
     
@@ -121,24 +182,24 @@
     return info;
 }
 
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    self.navigationController.navigationBar.hidden = YES;
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    
-    self.navigationController.navigationBar.hidden = NO;
-    
-    _playView.delegate = nil;
-    
-    _playView = nil;
-}
+//
+//- (void)viewWillAppear:(BOOL)animated
+//{
+//    [super viewWillAppear:animated];
+//    
+//    self.navigationController.navigationBar.hidden = YES;
+//}
+//
+//- (void)viewWillDisappear:(BOOL)animated
+//{
+//    [super viewWillDisappear:animated];
+//    
+//    self.navigationController.navigationBar.hidden = NO;
+//    
+//    _playView.delegate = nil;
+//    
+//    _playView = nil;
+//}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
