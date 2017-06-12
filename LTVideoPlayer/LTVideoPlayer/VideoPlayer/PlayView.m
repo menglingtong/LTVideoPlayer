@@ -8,7 +8,6 @@
 
 #import "PlayView.h"
 
-#import "PlayViewControl.h"
 
 #import "PlayView+BaseFunction.h"
 
@@ -16,20 +15,8 @@
 
 #define SCREEN_HEIGHT [UIScreen mainScreen].bounds.size.height
 
-// 播放器的状态
-typedef NS_ENUM(NSUInteger, LTPlayerState) {
-    LTPlayerStateFailed,     // 播放失败
-    LTPlayerStateBuffering,  //缓冲中
-    LTPlayerStatePlaying,    //播放中
-    LTPlayerStateStopped,    //停止播放
-    LTPlayerStatePause       //暂停播放
-};
+#import "HttpTool.h"
 
-// 滑动手势类型
-typedef NS_ENUM(NSUInteger, LTPanState) {
-    LTPanVerticalState, //上下滑动
-    LTPanHorizontalState //左右滑动
-};
 
 @interface PlayView ()
 
@@ -38,30 +25,9 @@ typedef NS_ENUM(NSUInteger, LTPanState) {
 /** 视频播放时间观察者 */
 @property (strong, nonatomic) id timeObserver;
 
-/** 播放器控制层 */
-@property (nonatomic, strong) PlayViewControl *playViewControl;
-
-/** 播放器控制层是否显示 */
-@property (nonatomic,assign) BOOL isPlayControlShow;
-
-/** 初始frame */
-@property (nonatomic, assign) CGRect startFrame;
-
-/** 播放状态 */
-@property (nonatomic, assign) LTPlayerState state;
-
-/** 滑动手势类型 */
-@property (nonatomic, assign) LTPanState panState;
-
-/** 音量滑条 */
-@property (nonatomic, strong) UISlider *volumeSlider;
-
 @property (nonatomic,assign) CGRect tmpRect;
 
 @property (nonatomic,copy) NSString *totalTime;
-
-/** 快进快退时间 */
-@property (nonatomic,assign) CGFloat tmpTime;
 
 /** AB循环 A点时间 */
 @property (nonatomic, assign) CGFloat aTime;
@@ -181,38 +147,10 @@ typedef NS_ENUM(NSUInteger, LTPanState) {
 
 
 /**
- 获取视频信息
+ 视频翻转
  */
 - (void)videoTransform
 {
-    // 此部分代码是根据视频连接获取视频转置矩阵信息
-//    NSURL *videoUrl = [NSURL URLWithString:_url];
-//    
-//    AVURLAsset *asset = [AVURLAsset assetWithURL:videoUrl];
-//    
-//    AVAssetTrack *videoTrack = [[asset tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0];
-//    
-//    CGAffineTransform txf = [videoTrack preferredTransform];
-//    
-//    NSLog(@"%f", txf.a);
-//    
-//    if (txf.b == 0 && txf.c == 0) {
-//        
-//        self.playerLayer.transform = CATransform3DMakeAffineTransform(CGAffineTransformMakeRotation(-M_PI_2));
-//        
-//        self.playerLayer.frame = CGRectMake(0.0f, 0.0f, _tmpRect.size.width, _tmpRect.size.height);;
-//        
-//    }else if (txf.b == 1 && txf.c == -1){
-//        
-//        self.playerLayer.transform = CATransform3DMakeAffineTransform(CGAffineTransformMakeRotation(M_PI_2));
-//        
-//        self.playerLayer.frame = CGRectMake(0.0f, 0.0f, _tmpRect.size.width, _tmpRect.size.height);
-//        
-//    }else if (txf.a == -1 && txf.d == -1) {
-//        
-//        playerBackgroundView.transform = CGAffineTransformMakeRotation(M_PI);
-//        
-//    }
     
     if (!_isRotation) {
         
@@ -421,6 +359,15 @@ typedef NS_ENUM(NSUInteger, LTPanState) {
     // app进入前台
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDidEnterPlayGround) name:UIApplicationDidBecomeActiveNotification object:nil];
     
+    // 开启监控设备物理方向
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(deviceOrientationChange)
+                                                 name:UIDeviceOrientationDidChangeNotification
+                                               object:nil
+     ];
+    
     // 返回按钮点击方法
     [self.playViewControl.backBtn addTarget:self action:@selector(didClickedBackButton:) forControlEvents:UIControlEventTouchUpInside];
     
@@ -447,147 +394,6 @@ typedef NS_ENUM(NSUInteger, LTPanState) {
     [self.playViewControl.progressBar addTarget:self action:@selector(valueChangeSlider:) forControlEvents:UIControlEventValueChanged];
     [self.playViewControl.progressBar addTarget:self action:@selector(endSlider:) forControlEvents:UIControlEventTouchCancel|UIControlEventTouchUpOutside|UIControlEventTouchUpInside];
     
-    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(deviceOrientationChange)
-                                                 name:UIDeviceOrientationDidChangeNotification
-                                               object:nil
-     ];
-    
-}
-
-#pragma mark --------- 手势事件 ---------
-/**
- *  滑动手势
- */
-- (void)panAction:(UIPanGestureRecognizer *)senderPan
-{
-    
-    CGPoint veloctyPoint = [senderPan velocityInView:self];
-    
-    switch (senderPan.state) {
-            
-        case UIGestureRecognizerStateBegan:{
-            
-            // fabs 返回绝对值
-            CGFloat x = fabs(veloctyPoint.x);
-            
-            CGFloat y = fabs(veloctyPoint.y);
-            
-            if (x > y) { // 水平移动
-                
-                self.panState = LTPanHorizontalState;
-                
-                CMTime time       = self.player.currentTime;
-                
-                // The timescale of the CMTime. value/timescale = seconds.
-                self.tmpTime      = time.value / time.timescale;
-                
-                [self pause];
-                
-            }
-            else if (x < y){ // 垂直移动
-                
-                self.panState = LTPanVerticalState;
-                
-            }
-            break;
-        }
-        case UIGestureRecognizerStateChanged:{ // 正在移动
-            
-            switch (self.panState) {
-                    
-                case LTPanHorizontalState:{
-                    
-                    [self horizontalMoved:veloctyPoint.x]; // 水平移动计算快进快退时间
-                    
-                    break;
-                }
-                case LTPanVerticalState:{
-                    
-                    [self verticalMoved:veloctyPoint.y]; // 垂直移动计算音量改变大小
-                    
-                    break;
-                }
-                default:
-                    break;
-            }
-            break;
-        }
-        case UIGestureRecognizerStateEnded:{ // 移动停止
-            
-            switch (self.panState) {
-                    
-                case LTPanHorizontalState:{
-                    
-                    // 继续播放
-                    [self play];
-                    
-                    CMTime dragTime = CMTimeMake(self.tmpTime, 1);
-                    
-                    [self.player seekToTime:dragTime];
-                    
-                    self.tmpTime = 0;
-                    
-                    break;
-                }
-                case LTPanVerticalState:{
-                    
-                    NSLog(@"垂直滑动结束");
-                    
-                    break;
-                }
-                default:
-                    break;
-            }
-            break;
-        }
-        default:
-            break;
-    }
-    
-}
-/**
- *  pan垂直移动方法
- */
-- (void)verticalMoved:(CGFloat)value
-{
-    self.volumeSlider.value -= value / 10000;
-}
-
-/**
- *  pan水平移动的方法
- */
-- (void)horizontalMoved:(CGFloat)value
-{
-    
-    NSLog(@"滑动时间--- %f",value);
-    
-    // 每次滑动需要叠加时间
-    self.tmpTime += value / 200;
-    
-    // 需要限定sumTime的范围
-    CMTime totalTime           = self.playerItem.duration;
-    
-    CGFloat totalMovieDuration = (CGFloat)totalTime.value/totalTime.timescale;
-    
-    if (self.tmpTime > totalMovieDuration) { self.tmpTime = totalMovieDuration;}
-    
-    if (self.tmpTime < 0){ self.tmpTime = 0; }
-    
-}
-
-
-/**
- *  轻点手势
- */
-- (void)tapAction:(UIGestureRecognizer *)senderTap
-{
-    if (senderTap.state == UIGestureRecognizerStateRecognized) {
-        
-        self.isPlayControlShow ? ([self hideControlView]) : ([self showControlView]);
-    }
 }
 
 // 获取系统音量
@@ -723,68 +529,8 @@ typedef NS_ENUM(NSUInteger, LTPanState) {
     
 }
 
-#pragma mark --------- slider事件处理 ---------
-- (void)touchDownSlider:(UISlider *)slider
-{
-    /** 这里涉及到 NSRunloop 还不太懂 **/
-    [NSObject cancelPreviousPerformRequestsWithTarget:self];
-    
-}
-
-- (void)valueChangeSlider:(UISlider *)slider
-{
-    if(self.player.currentItem.status == AVPlayerStatusReadyToPlay){
-        
-        [self pause];
-        
-        CGFloat total           = (CGFloat)_playerItem.duration.value / _playerItem.duration.timescale;
-        
-        //计算出拖动的当前秒数
-        NSInteger dragedSeconds = floorf(total * slider.value);
-        
-        //转换成CMTime才能给player来控制播放进度
-        
-        CMTime dragedCMTime     = CMTimeMake(dragedSeconds, 1);
-        // 拖拽的时长
-        NSInteger proMin        = (NSInteger)CMTimeGetSeconds(dragedCMTime) / 60;//当前秒
-        NSInteger proSec        = (NSInteger)CMTimeGetSeconds(dragedCMTime) % 60;//当前分钟
-        
-        NSString *currentTime   = [NSString stringWithFormat:@"%02zd:%02zd", proMin, proSec];
-        
-        
-        if (total > 0) {
-            
-            self.playViewControl.currentTimeLabel.text  = currentTime;
-            
-        }else {
-            // 此时设置slider值为0
-            slider.value = 0;
-        }
-        
-    }else { // player状态加载失败
-        // 此时设置slider值为0
-        slider.value = 0;
-    }
-    
-}
-- (void)endSlider:(UISlider *)slider
-{
-    
-    CGFloat total = self.playerItem.duration.value/self.playerItem.duration.timescale;
-    
-    NSInteger dragedTime = floorf(total *slider.value);
-    
-    CMTime cmTime = CMTimeMake(dragedTime, 1);
-    
-    [self.player seekToTime:cmTime];
-    
-    [self play];
-    [self autoHiddenControllView];
-}
-
 
 #pragma mark --------- KVC about playVideoState---------
-
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
     if (object == self.player.currentItem) {
@@ -994,59 +740,7 @@ typedef NS_ENUM(NSUInteger, LTPanState) {
 }
 
 
-#pragma mark --------- controlView显示与隐藏 ---------
 
-
-- (void)showControlView
-{
-    if(self.isPlayControlShow){
-        return;
-    }
-    
-    [UIView animateWithDuration:0.25f animations:^{
-        self.playViewControl.bottomBackView.alpha = 0.5;
-        self.playViewControl.topBackView.alpha = 0.5;
-        
-        _playViewControl.assistView.alpha = 0.5;
-        
-        _playViewControl.lockBtn.alpha = 0.5;
-        
-    } completion:^(BOOL finished) {
-        self.isPlayControlShow = YES;
-        [self autoHiddenControllView];
-        
-    }];
-    
-}
-
-- (void)autoHiddenControllView
-{
-    if(!self.isPlayControlShow){
-        return;
-    }
-    
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hideControlView) object:nil];
-    [self performSelector:@selector(hideControlView) withObject:nil afterDelay:6];
-    
-}
-- (void)hideControlView
-{
-    if(!self.isPlayControlShow){
-        return;
-    }
-    [UIView animateWithDuration:0.25f animations:^{
-        self.playViewControl.bottomBackView.alpha = 0;
-        self.playViewControl.topBackView.alpha = 0;
-        
-        _playViewControl.assistView.alpha = 0;
-        
-        _playViewControl.lockBtn.alpha = 0;
-        
-    } completion:^(BOOL finished) {
-        self.isPlayControlShow = NO;
-    }];
-    
-}
 
 #pragma mark --------- ButtonClike ---------
 /**

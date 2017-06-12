@@ -19,6 +19,8 @@
 		8D3BE9A11EEA6958001C8E2F /* PlayViewControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3BE99F1EEA6958001C8E2F /* PlayViewControl.m */; };
 		8D3BE9A21EEA6958001C8E2F /* PlayViewControl.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8D3BE9A01EEA6958001C8E2F /* PlayViewControl.xib */; };
 		8D3BE9D21EEE8132001C8E2F /* PlayView+BaseFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3BE9D11EEE8132001C8E2F /* PlayView+BaseFunction.m */; };
+		8D3BE9D61EEE8A0F001C8E2F /* HttpTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3BE9D51EEE8A0F001C8E2F /* HttpTool.m */; };
+		8D3BE9D91EEEA1F6001C8E2F /* PlayView+Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3BE9D81EEEA1F6001C8E2F /* PlayView+Notification.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +45,10 @@
 		8D3BE9A01EEA6958001C8E2F /* PlayViewControl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlayViewControl.xib; sourceTree = "<group>"; };
 		8D3BE9D01EEE8132001C8E2F /* PlayView+BaseFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PlayView+BaseFunction.h"; sourceTree = "<group>"; };
 		8D3BE9D11EEE8132001C8E2F /* PlayView+BaseFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "PlayView+BaseFunction.m"; sourceTree = "<group>"; };
+		8D3BE9D41EEE8A0F001C8E2F /* HttpTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HttpTool.h; sourceTree = "<group>"; };
+		8D3BE9D51EEE8A0F001C8E2F /* HttpTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HttpTool.m; sourceTree = "<group>"; };
+		8D3BE9D71EEEA1F6001C8E2F /* PlayView+Notification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PlayView+Notification.h"; sourceTree = "<group>"; };
+		8D3BE9D81EEEA1F6001C8E2F /* PlayView+Notification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "PlayView+Notification.m"; sourceTree = "<group>"; };
 		C85099C912FD01613444DFD9 /* Pods-LTVideoPlayer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LTVideoPlayer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LTVideoPlayer/Pods-LTVideoPlayer.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -88,6 +94,7 @@
 		8D3BE97E1EEA681B001C8E2F /* LTVideoPlayer */ = {
 			isa = PBXGroup;
 			children = (
+				8D3BE9D31EEE8A0F001C8E2F /* Network */,
 				8D3BE9971EEA68DC001C8E2F /* VideoPlayer */,
 				8D3BE9821EEA681B001C8E2F /* AppDelegate.h */,
 				8D3BE9831EEA681B001C8E2F /* AppDelegate.m */,
@@ -130,8 +137,19 @@
 			children = (
 				8D3BE9D01EEE8132001C8E2F /* PlayView+BaseFunction.h */,
 				8D3BE9D11EEE8132001C8E2F /* PlayView+BaseFunction.m */,
+				8D3BE9D71EEEA1F6001C8E2F /* PlayView+Notification.h */,
+				8D3BE9D81EEEA1F6001C8E2F /* PlayView+Notification.m */,
 			);
 			path = "video+category";
+			sourceTree = "<group>";
+		};
+		8D3BE9D31EEE8A0F001C8E2F /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				8D3BE9D41EEE8A0F001C8E2F /* HttpTool.h */,
+				8D3BE9D51EEE8A0F001C8E2F /* HttpTool.m */,
+			);
+			path = Network;
 			sourceTree = "<group>";
 		};
 		A0AA540534BB6532AFE1E360 /* Frameworks */ = {
@@ -265,9 +283,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8D3BE9D91EEEA1F6001C8E2F /* PlayView+Notification.m in Sources */,
 				8D3BE9A11EEA6958001C8E2F /* PlayViewControl.m in Sources */,
 				8D3BE9871EEA681B001C8E2F /* ViewController.m in Sources */,
 				8D3BE9D21EEE8132001C8E2F /* PlayView+BaseFunction.m in Sources */,
+				8D3BE9D61EEE8A0F001C8E2F /* HttpTool.m in Sources */,
 				8D3BE9841EEA681B001C8E2F /* AppDelegate.m in Sources */,
 				8D3BE99A1EEA6905001C8E2F /* PlayerController.m in Sources */,
 				8D3BE9811EEA681B001C8E2F /* main.m in Sources */,

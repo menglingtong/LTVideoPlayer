@@ -9,7 +9,7 @@
 #import "HttpTool.h"
 #import "AFNetworking.h"
 
-static NSString * kBaseUrl = SERVER_HOST;
+static NSString * kBaseUrl = @"http://47.93.116.92";
 
 @interface AFHttpClient : AFHTTPSessionManager
 
