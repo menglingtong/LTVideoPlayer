@@ -77,6 +77,9 @@ typedef NS_ENUM(NSUInteger, LTPanState) {
 /** AB循环 B点时间 */
 @property (nonatomic, assign) CGFloat bTime;
 
+/** 是否翻转 默认NO */
+@property (nonatomic, assign) BOOL isRotation;
+
 /**
  开始播放
  */
@@ -108,6 +111,8 @@ typedef NS_ENUM(NSUInteger, LTPanState) {
         _startFrame = frame;
         
         _tmpRect = frame;
+        
+        _isRotation = NO;
         
         // 初始化触摸事件
         [self createGesture];
@@ -201,6 +206,62 @@ typedef NS_ENUM(NSUInteger, LTPanState) {
     
 }
 
+
+/**
+ 获取视频信息
+ */
+- (void)videoTransform
+{
+    // 此部分代码是根据视频连接获取视频转置矩阵信息
+//    NSURL *videoUrl = [NSURL URLWithString:_url];
+//    
+//    AVURLAsset *asset = [AVURLAsset assetWithURL:videoUrl];
+//    
+//    AVAssetTrack *videoTrack = [[asset tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0];
+//    
+//    CGAffineTransform txf = [videoTrack preferredTransform];
+//    
+//    NSLog(@"%f", txf.a);
+//    
+//    if (txf.b == 0 && txf.c == 0) {
+//        
+//        self.playerLayer.transform = CATransform3DMakeAffineTransform(CGAffineTransformMakeRotation(-M_PI_2));
+//        
+//        self.playerLayer.frame = CGRectMake(0.0f, 0.0f, _tmpRect.size.width, _tmpRect.size.height);;
+//        
+//    }else if (txf.b == 1 && txf.c == -1){
+//        
+//        self.playerLayer.transform = CATransform3DMakeAffineTransform(CGAffineTransformMakeRotation(M_PI_2));
+//        
+//        self.playerLayer.frame = CGRectMake(0.0f, 0.0f, _tmpRect.size.width, _tmpRect.size.height);
+//        
+//    }else if (txf.a == -1 && txf.d == -1) {
+//        
+//        playerBackgroundView.transform = CGAffineTransformMakeRotation(M_PI);
+//        
+//    }
+    
+    if (!_isRotation) {
+        
+        self.playerLayer.transform = CATransform3DMakeRotation(M_PI, 0, 1, 0);
+        
+        self.playerLayer.frame = CGRectMake(0.0f, 0.0f, _tmpRect.size.width, _tmpRect.size.height);
+        
+        _isRotation = YES;
+        
+    }
+    else
+    {
+//        self.playerLayer.transform = CATransform3DMakeRotation(M_1_PI, 0, 1, 0);
+        
+        self.playerLayer.transform = CATransform3DIdentity;
+        
+        self.playerLayer.frame = CGRectMake(0.0f, 0.0f, _tmpRect.size.width, _tmpRect.size.height);
+        
+        _isRotation = NO;
+    }
+}
+
 - (void)layoutSubviews
 {
     [super layoutSubviews];
@@ -256,6 +317,8 @@ typedef NS_ENUM(NSUInteger, LTPanState) {
 - (void)didClickedMirrorButton:(UIButton *)button
 {
     NSLog(@"镜像！镜像！");
+    
+    [self videoTransform];
 }
 
 
@@ -1018,7 +1081,11 @@ typedef NS_ENUM(NSUInteger, LTPanState) {
 }
 
 
-
+- (void)dealloc
+{
+    // 移除监听
+    [self.player removeTimeObserver:self.timeObserver];
+}
 
 
 /*
