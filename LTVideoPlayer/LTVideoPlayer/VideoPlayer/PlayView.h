@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+#import <MediaPlayer/MediaPlayer.h>
+
+#import <AVFoundation/AVFoundation.h>
+
 typedef struct
 {
     NSUInteger totalTime;   // 视频总时长
@@ -39,5 +43,12 @@ typedef NS_ENUM(NSUInteger, LTPlayerLayerGravity) {
 @property (nonatomic, assign) VideoInfo videoInfo;
 
 @property (nonatomic, copy) NSString *url;
+
+#pragma mark - 原生AVPlayer
+@property (nonatomic, strong) AVPlayer *player;
+
+@property (nonatomic, strong) AVPlayerItem *playerItem;
+
+@property (nonatomic, strong) AVPlayerLayer *playerLayer;
 
 @end

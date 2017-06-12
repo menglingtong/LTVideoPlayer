@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		769B283D1F0FD59756950C64 /* libPods-LTVideoPlayer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F9B535437D44E33A92EACB6 /* libPods-LTVideoPlayer.a */; };
 		8D3BE9811EEA681B001C8E2F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3BE9801EEA681B001C8E2F /* main.m */; };
 		8D3BE9841EEA681B001C8E2F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3BE9831EEA681B001C8E2F /* AppDelegate.m */; };
 		8D3BE9871EEA681B001C8E2F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3BE9861EEA681B001C8E2F /* ViewController.m */; };
@@ -17,9 +18,12 @@
 		8D3BE99D1EEA692F001C8E2F /* PlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3BE99C1EEA692F001C8E2F /* PlayView.m */; };
 		8D3BE9A11EEA6958001C8E2F /* PlayViewControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3BE99F1EEA6958001C8E2F /* PlayViewControl.m */; };
 		8D3BE9A21EEA6958001C8E2F /* PlayViewControl.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8D3BE9A01EEA6958001C8E2F /* PlayViewControl.xib */; };
+		8D3BE9D21EEE8132001C8E2F /* PlayView+BaseFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3BE9D11EEE8132001C8E2F /* PlayView+BaseFunction.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6F9B535437D44E33A92EACB6 /* libPods-LTVideoPlayer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LTVideoPlayer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7597062836A4996F6ED2E008 /* Pods-LTVideoPlayer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LTVideoPlayer.release.xcconfig"; path = "Pods/Target Support Files/Pods-LTVideoPlayer/Pods-LTVideoPlayer.release.xcconfig"; sourceTree = "<group>"; };
 		8D3BE97C1EEA681B001C8E2F /* LTVideoPlayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LTVideoPlayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D3BE9801EEA681B001C8E2F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8D3BE9821EEA681B001C8E2F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -37,6 +41,9 @@
 		8D3BE99E1EEA6958001C8E2F /* PlayViewControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayViewControl.h; sourceTree = "<group>"; };
 		8D3BE99F1EEA6958001C8E2F /* PlayViewControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayViewControl.m; sourceTree = "<group>"; };
 		8D3BE9A01EEA6958001C8E2F /* PlayViewControl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlayViewControl.xib; sourceTree = "<group>"; };
+		8D3BE9D01EEE8132001C8E2F /* PlayView+BaseFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PlayView+BaseFunction.h"; sourceTree = "<group>"; };
+		8D3BE9D11EEE8132001C8E2F /* PlayView+BaseFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "PlayView+BaseFunction.m"; sourceTree = "<group>"; };
+		C85099C912FD01613444DFD9 /* Pods-LTVideoPlayer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LTVideoPlayer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LTVideoPlayer/Pods-LTVideoPlayer.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -44,17 +51,29 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				769B283D1F0FD59756950C64 /* libPods-LTVideoPlayer.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0EE08F7C0E775CEE542AF1AE /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				C85099C912FD01613444DFD9 /* Pods-LTVideoPlayer.debug.xcconfig */,
+				7597062836A4996F6ED2E008 /* Pods-LTVideoPlayer.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		8D3BE9731EEA681B001C8E2F = {
 			isa = PBXGroup;
 			children = (
 				8D3BE97E1EEA681B001C8E2F /* LTVideoPlayer */,
 				8D3BE97D1EEA681B001C8E2F /* Products */,
+				0EE08F7C0E775CEE542AF1AE /* Pods */,
+				A0AA540534BB6532AFE1E360 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -94,6 +113,7 @@
 		8D3BE9971EEA68DC001C8E2F /* VideoPlayer */ = {
 			isa = PBXGroup;
 			children = (
+				8D3BE9C91EEE7C82001C8E2F /* video+category */,
 				8D3BE9981EEA6905001C8E2F /* PlayerController.h */,
 				8D3BE9991EEA6905001C8E2F /* PlayerController.m */,
 				8D3BE99B1EEA692F001C8E2F /* PlayView.h */,
@@ -105,6 +125,23 @@
 			path = VideoPlayer;
 			sourceTree = "<group>";
 		};
+		8D3BE9C91EEE7C82001C8E2F /* video+category */ = {
+			isa = PBXGroup;
+			children = (
+				8D3BE9D01EEE8132001C8E2F /* PlayView+BaseFunction.h */,
+				8D3BE9D11EEE8132001C8E2F /* PlayView+BaseFunction.m */,
+			);
+			path = "video+category";
+			sourceTree = "<group>";
+		};
+		A0AA540534BB6532AFE1E360 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				6F9B535437D44E33A92EACB6 /* libPods-LTVideoPlayer.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -112,9 +149,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8D3BE9931EEA681B001C8E2F /* Build configuration list for PBXNativeTarget "LTVideoPlayer" */;
 			buildPhases = (
+				9F481A8C620F0D3C0007300E /* [CP] Check Pods Manifest.lock */,
 				8D3BE9781EEA681B001C8E2F /* Sources */,
 				8D3BE9791EEA681B001C8E2F /* Frameworks */,
 				8D3BE97A1EEA681B001C8E2F /* Resources */,
+				B25AB2274F704A7D52404D5E /* [CP] Embed Pods Frameworks */,
+				1C8E9A055CA74A1AC9FAA861 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -172,6 +212,54 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		1C8E9A055CA74A1AC9FAA861 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LTVideoPlayer/Pods-LTVideoPlayer-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9F481A8C620F0D3C0007300E /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		B25AB2274F704A7D52404D5E /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LTVideoPlayer/Pods-LTVideoPlayer-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		8D3BE9781EEA681B001C8E2F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -179,6 +267,7 @@
 			files = (
 				8D3BE9A11EEA6958001C8E2F /* PlayViewControl.m in Sources */,
 				8D3BE9871EEA681B001C8E2F /* ViewController.m in Sources */,
+				8D3BE9D21EEE8132001C8E2F /* PlayView+BaseFunction.m in Sources */,
 				8D3BE9841EEA681B001C8E2F /* AppDelegate.m in Sources */,
 				8D3BE99A1EEA6905001C8E2F /* PlayerController.m in Sources */,
 				8D3BE9811EEA681B001C8E2F /* main.m in Sources */,
@@ -298,6 +387,7 @@
 		};
 		8D3BE9941EEA681B001C8E2F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C85099C912FD01613444DFD9 /* Pods-LTVideoPlayer.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = LTVideoPlayer/Info.plist;
@@ -309,6 +399,7 @@
 		};
 		8D3BE9951EEA681B001C8E2F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7597062836A4996F6ED2E008 /* Pods-LTVideoPlayer.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = LTVideoPlayer/Info.plist;
@@ -337,6 +428,7 @@
 				8D3BE9951EEA681B001C8E2F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

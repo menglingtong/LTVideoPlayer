@@ -10,4 +10,18 @@
 
 @interface PlayView (BaseFunction)
 
+// 播放
+- (void)play;
+
+// 暂停
+- (void)pause;
+
+// 停止
+- (void)stop;
+
+// 全屏
+//- (void)fullScreen;
+
+// 屏幕手势
+
 @end

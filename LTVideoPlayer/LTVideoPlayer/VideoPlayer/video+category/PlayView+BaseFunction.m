@@ -10,4 +10,19 @@
 
 @implementation PlayView (BaseFunction)
 
+- (void)play
+{
+    [self.player play];
+}
+
+- (void)pause
+{
+    [self.player pause];
+}
+
+- (void)stop
+{
+    
+}
+
 @end

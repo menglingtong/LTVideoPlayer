@@ -10,9 +10,7 @@
 
 #import "PlayViewControl.h"
 
-#import <MediaPlayer/MediaPlayer.h>
-
-#import <AVFoundation/AVFoundation.h>
+#import "PlayView+BaseFunction.h"
 
 #define SCREEN_WIDTH [UIScreen mainScreen].bounds.size.width
 
@@ -35,13 +33,7 @@ typedef NS_ENUM(NSUInteger, LTPanState) {
 
 @interface PlayView ()
 
-#pragma mark - 原生AVPlayer
 
-@property (nonatomic, strong) AVPlayer *player;
-
-@property (nonatomic, strong) AVPlayerItem *playerItem;
-
-@property (nonatomic, strong) AVPlayerLayer *playerLayer;
 
 /** 视频播放时间观察者 */
 @property (strong, nonatomic) id timeObserver;
@@ -79,23 +71,6 @@ typedef NS_ENUM(NSUInteger, LTPanState) {
 
 /** 是否翻转 默认NO */
 @property (nonatomic, assign) BOOL isRotation;
-
-/**
- 开始播放
- */
-- (void)play;
-
-
-/**
- 暂停播放
- */
-- (void)pause;
-
-
-/**
- 停止播放
- */
-- (void)stop;
 
 @end
 
@@ -1103,22 +1078,6 @@ typedef NS_ENUM(NSUInteger, LTPanState) {
 
 
 #pragma mark --------- 播放层控制 -------
-- (void)play
-{
-    [self.player play];
-}
-
-- (void)stop
-{
-//    [self.player stop];
-}
-
-- (void)pause
-{
-    [self.player pause];
-}
-
-
 - (void)dealloc
 {
     // 移除监听
