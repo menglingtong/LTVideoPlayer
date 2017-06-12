@@ -329,11 +329,11 @@ typedef NS_ENUM(NSUInteger, LTPanState) {
 {
     NSLog(@"慢一点嘛");
     
-    self.player.rate = 2;
+    self.player.rate = 0.02;
     
     NSLog(@"%f", self.player.rate);
     
-    [self enableAudioTracks:NO inPlayerItem:self.playerItem];
+    [self enableAudioTracks:YES inPlayerItem:self.playerItem];
 }
 
 
@@ -390,10 +390,22 @@ typedef NS_ENUM(NSUInteger, LTPanState) {
 {
     for (AVPlayerItemTrack *track in playerItem.tracks)
     {
+        
+        NSLog(@"mediaType ------ %@", track.assetTrack.mediaType);
+        
+        if ([track.assetTrack.mediaType isEqual:AVMediaTypeVideo]) {
+            
+            
+            track.enabled = enable;
+        }
+        
         if ([track.assetTrack.mediaType isEqual:AVMediaTypeAudio])
         {
             track.enabled = enable;
         }
+        
+        
+        
     }
 }
 
