@@ -122,7 +122,7 @@ typedef NS_ENUM(NSUInteger, LTPanState) {
         
         [self play];
         
-        self.backgroundColor = [UIColor redColor];
+        self.backgroundColor = [UIColor blackColor];
         
     }
     
@@ -136,8 +136,6 @@ typedef NS_ENUM(NSUInteger, LTPanState) {
     
     // 添加播放层
     [self initPlayerView];
-    
-    self.backgroundColor = [UIColor redColor];
     
     // 添加播放控制层
     [self initPlayControl];
@@ -330,6 +328,12 @@ typedef NS_ENUM(NSUInteger, LTPanState) {
 - (void)didClickedSlowButton:(UIButton *)button
 {
     NSLog(@"慢一点嘛");
+    
+    self.player.rate = 2;
+    
+    NSLog(@"%f", self.player.rate);
+    
+    [self enableAudioTracks:NO inPlayerItem:self.playerItem];
 }
 
 
@@ -361,6 +365,10 @@ typedef NS_ENUM(NSUInteger, LTPanState) {
     [self videoLoopAtAPointTimeToBPointTime];
 }
 
+
+/**
+ 视频循环播放
+ */
 - (void)videoLoopAtAPointTimeToBPointTime
 {
     CMTime aPointTime = CMTimeMake(_aTime, 1);
@@ -369,6 +377,24 @@ typedef NS_ENUM(NSUInteger, LTPanState) {
     
     [self.player seekToTime:aPointTime];
     
+}
+
+
+/**
+ 视频慢速播放
+
+ @param enable NO 慢速播放， YES 正常播放
+ @param playerItem playerItem
+ */
+- (void)enableAudioTracks:(BOOL)enable inPlayerItem:(AVPlayerItem *)playerItem
+{
+    for (AVPlayerItemTrack *track in playerItem.tracks)
+    {
+        if ([track.assetTrack.mediaType isEqual:AVMediaTypeAudio])
+        {
+            track.enabled = enable;
+        }
+    }
 }
 
 
