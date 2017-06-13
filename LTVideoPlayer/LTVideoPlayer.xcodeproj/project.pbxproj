@@ -15,11 +15,13 @@
 		8D3BE98C1EEA681B001C8E2F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8D3BE98B1EEA681B001C8E2F /* Assets.xcassets */; };
 		8D3BE98F1EEA681B001C8E2F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8D3BE98D1EEA681B001C8E2F /* LaunchScreen.storyboard */; };
 		8D3BE99D1EEA692F001C8E2F /* PlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3BE99C1EEA692F001C8E2F /* PlayView.m */; };
-		8D3BE9A11EEA6958001C8E2F /* PlayViewControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3BE99F1EEA6958001C8E2F /* PlayViewControl.m */; };
-		8D3BE9A21EEA6958001C8E2F /* PlayViewControl.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8D3BE9A01EEA6958001C8E2F /* PlayViewControl.xib */; };
+		8D3BE9A11EEA6958001C8E2F /* BaseControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3BE99F1EEA6958001C8E2F /* BaseControl.m */; };
+		8D3BE9A21EEA6958001C8E2F /* BaseControl.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8D3BE9A01EEA6958001C8E2F /* BaseControl.xib */; };
 		8D3BE9D21EEE8132001C8E2F /* PlayView+BaseFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3BE9D11EEE8132001C8E2F /* PlayView+BaseFunction.m */; };
 		8D3BE9D61EEE8A0F001C8E2F /* HttpTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3BE9D51EEE8A0F001C8E2F /* HttpTool.m */; };
 		8D3BE9D91EEEA1F6001C8E2F /* PlayView+Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3BE9D81EEEA1F6001C8E2F /* PlayView+Notification.m */; };
+		8D9D1EA21EEF9EDF002E7E76 /* LoopControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D9D1EA01EEF9EDF002E7E76 /* LoopControl.m */; };
+		8D9D1EA31EEF9EDF002E7E76 /* LoopControl.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8D9D1EA11EEF9EDF002E7E76 /* LoopControl.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,15 +39,18 @@
 		8D3BE9901EEA681B001C8E2F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8D3BE99B1EEA692F001C8E2F /* PlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayView.h; sourceTree = "<group>"; };
 		8D3BE99C1EEA692F001C8E2F /* PlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayView.m; sourceTree = "<group>"; };
-		8D3BE99E1EEA6958001C8E2F /* PlayViewControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayViewControl.h; sourceTree = "<group>"; };
-		8D3BE99F1EEA6958001C8E2F /* PlayViewControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayViewControl.m; sourceTree = "<group>"; };
-		8D3BE9A01EEA6958001C8E2F /* PlayViewControl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlayViewControl.xib; sourceTree = "<group>"; };
+		8D3BE99E1EEA6958001C8E2F /* BaseControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseControl.h; sourceTree = "<group>"; };
+		8D3BE99F1EEA6958001C8E2F /* BaseControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseControl.m; sourceTree = "<group>"; };
+		8D3BE9A01EEA6958001C8E2F /* BaseControl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BaseControl.xib; sourceTree = "<group>"; };
 		8D3BE9D01EEE8132001C8E2F /* PlayView+BaseFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PlayView+BaseFunction.h"; sourceTree = "<group>"; };
 		8D3BE9D11EEE8132001C8E2F /* PlayView+BaseFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "PlayView+BaseFunction.m"; sourceTree = "<group>"; };
 		8D3BE9D41EEE8A0F001C8E2F /* HttpTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HttpTool.h; sourceTree = "<group>"; };
 		8D3BE9D51EEE8A0F001C8E2F /* HttpTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HttpTool.m; sourceTree = "<group>"; };
 		8D3BE9D71EEEA1F6001C8E2F /* PlayView+Notification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PlayView+Notification.h"; sourceTree = "<group>"; };
 		8D3BE9D81EEEA1F6001C8E2F /* PlayView+Notification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "PlayView+Notification.m"; sourceTree = "<group>"; };
+		8D9D1E9F1EEF9EDF002E7E76 /* LoopControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoopControl.h; sourceTree = "<group>"; };
+		8D9D1EA01EEF9EDF002E7E76 /* LoopControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoopControl.m; sourceTree = "<group>"; };
+		8D9D1EA11EEF9EDF002E7E76 /* LoopControl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoopControl.xib; sourceTree = "<group>"; };
 		C85099C912FD01613444DFD9 /* Pods-LTVideoPlayer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LTVideoPlayer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LTVideoPlayer/Pods-LTVideoPlayer.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -120,9 +125,12 @@
 				8D3BE9C91EEE7C82001C8E2F /* video+category */,
 				8D3BE99B1EEA692F001C8E2F /* PlayView.h */,
 				8D3BE99C1EEA692F001C8E2F /* PlayView.m */,
-				8D3BE99E1EEA6958001C8E2F /* PlayViewControl.h */,
-				8D3BE99F1EEA6958001C8E2F /* PlayViewControl.m */,
-				8D3BE9A01EEA6958001C8E2F /* PlayViewControl.xib */,
+				8D3BE99E1EEA6958001C8E2F /* BaseControl.h */,
+				8D3BE99F1EEA6958001C8E2F /* BaseControl.m */,
+				8D3BE9A01EEA6958001C8E2F /* BaseControl.xib */,
+				8D9D1E9F1EEF9EDF002E7E76 /* LoopControl.h */,
+				8D9D1EA01EEF9EDF002E7E76 /* LoopControl.m */,
+				8D9D1EA11EEF9EDF002E7E76 /* LoopControl.xib */,
 			);
 			path = VideoPlayer;
 			sourceTree = "<group>";
@@ -218,8 +226,9 @@
 			files = (
 				8D3BE98F1EEA681B001C8E2F /* LaunchScreen.storyboard in Resources */,
 				8D3BE98C1EEA681B001C8E2F /* Assets.xcassets in Resources */,
-				8D3BE9A21EEA6958001C8E2F /* PlayViewControl.xib in Resources */,
+				8D3BE9A21EEA6958001C8E2F /* BaseControl.xib in Resources */,
 				8D3BE98A1EEA681B001C8E2F /* Main.storyboard in Resources */,
+				8D9D1EA31EEF9EDF002E7E76 /* LoopControl.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -279,10 +288,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D3BE9D91EEEA1F6001C8E2F /* PlayView+Notification.m in Sources */,
-				8D3BE9A11EEA6958001C8E2F /* PlayViewControl.m in Sources */,
+				8D3BE9A11EEA6958001C8E2F /* BaseControl.m in Sources */,
 				8D3BE9871EEA681B001C8E2F /* ViewController.m in Sources */,
 				8D3BE9D21EEE8132001C8E2F /* PlayView+BaseFunction.m in Sources */,
 				8D3BE9D61EEE8A0F001C8E2F /* HttpTool.m in Sources */,
+				8D9D1EA21EEF9EDF002E7E76 /* LoopControl.m in Sources */,
 				8D3BE9841EEA681B001C8E2F /* AppDelegate.m in Sources */,
 				8D3BE9811EEA681B001C8E2F /* main.m in Sources */,
 				8D3BE99D1EEA692F001C8E2F /* PlayView.m in Sources */,

@@ -6,14 +6,14 @@
 //  Copyright © 2017年 LryMlt. All rights reserved.
 //
 
-#import "PlayViewControl.h"
+#import "BaseControl.h"
 
-@interface PlayViewControl ()
+@interface BaseControl ()
 
 
 @end
 
-@implementation PlayViewControl
+@implementation BaseControl
 
 - (void)viewDidLoad {
     [super viewDidLoad];

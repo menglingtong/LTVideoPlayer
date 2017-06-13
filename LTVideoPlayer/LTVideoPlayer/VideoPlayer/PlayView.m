@@ -128,11 +128,11 @@
 - (void)initPlayControl
 {
     
-    self.playViewControl.view.frame = CGRectMake(0, 0, _startFrame.size.width, _startFrame.size.height);
+    self.baseControl.view.frame = CGRectMake(0, 0, _startFrame.size.width, _startFrame.size.height);
     
-    [self addSubview:_playViewControl.view];
+    [self addSubview:_baseControl.view];
     
-    self.playViewControl.cutBtn.selected = NO;
+    self.baseControl.cutBtn.selected = NO;
 }
 
 /**
@@ -221,7 +221,7 @@
     [super layoutSubviews];
     
     self.playerLayer.frame = self.bounds;
-    self.playViewControl.view.frame = self.bounds;
+    self.baseControl.view.frame = self.bounds;
     
     [self layoutIfNeeded];
     
@@ -240,13 +240,13 @@
     if (button.selected) {
         
         // 从播放状态转入暂停状态
-        [self.playViewControl.playBtn setImage:[UIImage imageNamed:@"play"] forState:UIControlStateNormal];
+        [self.baseControl.playBtn setImage:[UIImage imageNamed:@"play"] forState:UIControlStateNormal];
         [self pause];
         
     } else {
         
         // 从暂停状态转入播放状态
-        [self.playViewControl.playBtn setImage:[UIImage imageNamed:@"pause"] forState:UIControlStateNormal];
+        [self.baseControl.playBtn setImage:[UIImage imageNamed:@"pause"] forState:UIControlStateNormal];
         [self play];
     }
 }
@@ -377,13 +377,13 @@
     if(button.selected){
         
         // 从非全屏状态进入全屏状态
-        [self.playViewControl.fullScreenBtn setImage:[UIImage imageNamed:@"playerExitFullScreen"] forState:UIControlStateNormal];
+        [self.baseControl.fullScreenBtn setImage:[UIImage imageNamed:@"playerExitFullScreen"] forState:UIControlStateNormal];
         [self changeOrientation:UIInterfaceOrientationLandscapeRight];
         [self setFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
     }else{
         
         // 从全屏状态进入非全屏状态
-        [self.playViewControl.fullScreenBtn setImage:[UIImage imageNamed:@"playerFullScreen"] forState:UIControlStateNormal];
+        [self.baseControl.fullScreenBtn setImage:[UIImage imageNamed:@"playerFullScreen"] forState:UIControlStateNormal];
         [self changeOrientation:UIInterfaceOrientationPortrait];
         [self setFrame:_tmpRect];
     }
@@ -410,30 +410,30 @@
      ];
     
     // 返回按钮点击方法
-    [self.playViewControl.backBtn addTarget:self action:@selector(didClickedBackButton:) forControlEvents:UIControlEventTouchUpInside];
+    [self.baseControl.backBtn addTarget:self action:@selector(didClickedBackButton:) forControlEvents:UIControlEventTouchUpInside];
     
     // 播放按钮点击方法 按下的方法
-    [self.playViewControl.playBtn addTarget:self action:@selector(didClickedPlayButton:) forControlEvents:UIControlEventTouchUpInside];
+    [self.baseControl.playBtn addTarget:self action:@selector(didClickedPlayButton:) forControlEvents:UIControlEventTouchUpInside];
     
     // 镜像按钮点击方法
-    [self.playViewControl.mirrorBtn addTarget:self action:@selector(didClickedMirrorButton:) forControlEvents:UIControlEventTouchUpInside];
+    [self.baseControl.mirrorBtn addTarget:self action:@selector(didClickedMirrorButton:) forControlEvents:UIControlEventTouchUpInside];
     
     // 慢速按钮点击方法
-    [self.playViewControl.slowBtn addTarget:self action:@selector(didClickedSlowButton:) forControlEvents:UIControlEventTouchUpInside];
+    [self.baseControl.slowBtn addTarget:self action:@selector(didClickedSlowButton:) forControlEvents:UIControlEventTouchUpInside];
     
     // AB循环按钮点击方法 抬起获取B点时间
-    [self.playViewControl.cutBtn addTarget:self action:@selector(didClickedCutBPointButton:) forControlEvents:UIControlEventTouchUpInside];
+    [self.baseControl.cutBtn addTarget:self action:@selector(didClickedCutBPointButton:) forControlEvents:UIControlEventTouchUpInside];
     
     // AB循环按钮点击方法 按下获取A点时间
-    [self.playViewControl.cutBtn addTarget:self action:@selector(didClickedCutAPointButton:) forControlEvents:UIControlEventTouchDown];
+    [self.baseControl.cutBtn addTarget:self action:@selector(didClickedCutAPointButton:) forControlEvents:UIControlEventTouchDown];
     
     // 全屏按钮
-    [self.playViewControl.fullScreenBtn addTarget:self action:@selector(didClickedFullScreenButton:) forControlEvents:UIControlEventTouchUpInside];
+    [self.baseControl.fullScreenBtn addTarget:self action:@selector(didClickedFullScreenButton:) forControlEvents:UIControlEventTouchUpInside];
     
     
-    [self.playViewControl.progressBar addTarget:self action:@selector(touchDownSlider:) forControlEvents:UIControlEventTouchDown];
-    [self.playViewControl.progressBar addTarget:self action:@selector(valueChangeSlider:) forControlEvents:UIControlEventValueChanged];
-    [self.playViewControl.progressBar addTarget:self action:@selector(endSlider:) forControlEvents:UIControlEventTouchCancel|UIControlEventTouchUpOutside|UIControlEventTouchUpInside];
+    [self.baseControl.progressBar addTarget:self action:@selector(touchDownSlider:) forControlEvents:UIControlEventTouchDown];
+    [self.baseControl.progressBar addTarget:self action:@selector(valueChangeSlider:) forControlEvents:UIControlEventValueChanged];
+    [self.baseControl.progressBar addTarget:self action:@selector(endSlider:) forControlEvents:UIControlEventTouchCancel|UIControlEventTouchUpOutside|UIControlEventTouchUpInside];
     
 }
 
@@ -545,18 +545,18 @@
     
 }
 
-- (PlayViewControl *)playViewControl
+- (BaseControl *)baseControl
 {
-    if (_playViewControl == nil) {
+    if (_baseControl == nil) {
         
-        _playViewControl = [[PlayViewControl alloc] init];
+        _baseControl = [[BaseControl alloc] init];
         
         
     }
     
-    [self addSubview:_playViewControl.view];
+    [self addSubview:_baseControl.view];
     
-    return _playViewControl;
+    return _baseControl;
 }
 
 - (void)setVideoInfo:(VideoInfo)videoInfo
@@ -583,7 +583,7 @@
                 
                 CGFloat totalSecond = _playerItem.duration.value / _playerItem.duration.timescale;// 转换成秒
                 _totalTime = [self convertTime:totalSecond];// 转换成播放时间
-                self.playViewControl.totalTimeLabel.text = [NSString stringWithFormat:@"%@",_totalTime];
+                self.baseControl.totalTimeLabel.text = [NSString stringWithFormat:@"%@",_totalTime];
                 [self monitoringPlayback:self.playerItem];// 监听播放状态
                 
                 
@@ -602,7 +602,7 @@
             NSTimeInterval timeInterval = [self getBufferZones];
             CMTime duration             = self.playerItem.duration;
             CGFloat totalDuration       = CMTimeGetSeconds(duration);
-            [self.playViewControl.playerProgressView setProgress:timeInterval / totalDuration animated:NO];
+            [self.baseControl.playerProgressView setProgress:timeInterval / totalDuration animated:NO];
             
             
             
@@ -660,9 +660,9 @@
         
         CGFloat totalSecond = playerItem.duration.value/playerItem.duration.timescale;
         
-        weakSelf.playViewControl.progressBar.value = currentSecond/totalSecond;
+        weakSelf.baseControl.progressBar.value = currentSecond/totalSecond;
         
-        weakSelf.playViewControl.currentTimeLabel.text = [NSString stringWithFormat:@"%@",timeString];
+        weakSelf.baseControl.currentTimeLabel.text = [NSString stringWithFormat:@"%@",timeString];
         
     }];
     
@@ -749,26 +749,26 @@
     switch (interfaceOrientation) {
         case UIInterfaceOrientationPortrait:{
             
-            self.playViewControl.fullScreenBtn.selected = NO;
+            self.baseControl.fullScreenBtn.selected = NO;
             
             [self setFrame:_tmpRect];
             
-            self.playViewControl.backBtn.hidden = NO;
+            self.baseControl.backBtn.hidden = NO;
             
         }
             break;
         case UIInterfaceOrientationLandscapeLeft:{
             
-            self.playViewControl.fullScreenBtn.selected = YES;
+            self.baseControl.fullScreenBtn.selected = YES;
             [self setFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
-            self.playViewControl.backBtn.hidden = NO;
+            self.baseControl.backBtn.hidden = NO;
             
         }
             break;
         case UIInterfaceOrientationLandscapeRight:{
-            self.playViewControl.fullScreenBtn.selected = YES;
+            self.baseControl.fullScreenBtn.selected = YES;
             [self setFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
-            self.playViewControl.backBtn.hidden = NO;
+            self.baseControl.backBtn.hidden = NO;
             
         }
             break;
@@ -806,7 +806,7 @@
     
     [self pause];
     [self changeOrientation:UIInterfaceOrientationPortrait];
-    [self.playViewControl.playBtn setImage:[UIImage imageNamed:@"tipsPlay"] forState:UIControlStateNormal];
+    [self.baseControl.playBtn setImage:[UIImage imageNamed:@"tipsPlay"] forState:UIControlStateNormal];
 //    [self.delegate playerGoBack];
 }
 

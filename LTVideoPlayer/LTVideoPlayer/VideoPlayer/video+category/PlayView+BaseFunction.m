@@ -33,12 +33,12 @@
     }
     
     [UIView animateWithDuration:0.25f animations:^{
-        self.playViewControl.bottomBackView.alpha = 0.5;
-        self.playViewControl.topBackView.alpha = 0.5;
+        self.baseControl.bottomBackView.alpha = 0.5;
+        self.baseControl.topBackView.alpha = 0.5;
         
-        self.playViewControl.assistView.alpha = 0.5;
+        self.baseControl.assistView.alpha = 0.5;
         
-        self.playViewControl.lockBtn.alpha = 0.5;
+        self.baseControl.lockBtn.alpha = 0.5;
         
     } completion:^(BOOL finished) {
         self.isPlayControlShow = YES;
@@ -64,12 +64,12 @@
         return;
     }
     [UIView animateWithDuration:0.25f animations:^{
-        self.playViewControl.bottomBackView.alpha = 0;
-        self.playViewControl.topBackView.alpha = 0;
+        self.baseControl.bottomBackView.alpha = 0;
+        self.baseControl.topBackView.alpha = 0;
         
-        self.playViewControl.assistView.alpha = 0;
+        self.baseControl.assistView.alpha = 0;
         
-        self.playViewControl.lockBtn.alpha = 0;
+        self.baseControl.lockBtn.alpha = 0;
         
     } completion:^(BOOL finished) {
         self.isPlayControlShow = NO;
@@ -241,7 +241,7 @@
         
         if (total > 0) {
             
-            self.playViewControl.currentTimeLabel.text  = currentTime;
+            self.baseControl.currentTimeLabel.text  = currentTime;
             
         }else {
             // 此时设置slider值为0

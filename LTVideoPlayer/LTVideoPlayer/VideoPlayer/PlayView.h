@@ -12,7 +12,7 @@
 
 #import <AVFoundation/AVFoundation.h>
 
-#import "PlayViewControl.h"
+#import "BaseControl.h"
 
 typedef struct
 {
@@ -63,7 +63,7 @@ typedef NS_ENUM(NSUInteger, LTPanState) {
 @property (nonatomic, copy) NSString *url;
 
 /** 播放器控制层 */
-@property (nonatomic, strong) PlayViewControl *playViewControl;
+@property (nonatomic, strong) BaseControl *baseControl;
 
 /** 播放器控制层是否显示 */
 @property (nonatomic,assign) BOOL isPlayControlShow;

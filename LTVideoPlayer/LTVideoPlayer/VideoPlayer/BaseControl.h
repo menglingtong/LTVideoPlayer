@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PlayViewControl : UIViewController
+@interface BaseControl : UIViewController
 
 /** 视频标题 */
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
