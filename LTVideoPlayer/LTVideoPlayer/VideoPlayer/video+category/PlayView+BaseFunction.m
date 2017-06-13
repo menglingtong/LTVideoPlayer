@@ -22,7 +22,27 @@
 
 - (void)stop
 {
+    [self pause];
     
+    [self.player setRate:0];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:AVPlayerItemDidPlayToEndTimeNotification object:self.playerItem];
+    
+    [self.playerItem removeObserver:self forKeyPath:@"status"];
+    
+    [self.playerItem removeObserver:self forKeyPath:@"loadedTimeRanges"];
+    
+    [self.playerItem removeObserver:self forKeyPath:@"playbackBufferEmpty"];
+    
+    [self.playerItem removeObserver:self forKeyPath:@"playbackLikelyToKeepUp"];
+    
+    [self.player replaceCurrentItemWithPlayerItem:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    [self.playerItem cancelPendingSeeks];
+    
+    [self.playerItem.asset cancelLoading];
 }
 
 #pragma mark --------- controlView显示与隐藏 ---------

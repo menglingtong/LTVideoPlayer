@@ -12,7 +12,11 @@
 
 #import <AVFoundation/AVFoundation.h>
 
+// 基础控制功能
 #import "BaseControl.h"
+
+// AB循环控制功能
+#import "LoopControl.h"
 
 typedef struct
 {
@@ -24,14 +28,14 @@ typedef struct
 
 
 typedef NS_ENUM(NSUInteger, LTPlayerLayerGravity) {
-    LTPlayerLayerGravityResize,           // 非均匀模式
+    LTPlayerLayerGravityResize = 0,           // 非均匀模式
     LTPlayerLayerGravityResizeAspect,     // 等比例填充
     LTPlayerLayerGravityResizeAspectFill  // 等比例填充(维度会被裁剪)
 };
 
 // 播放器的状态
 typedef NS_ENUM(NSUInteger, LTPlayerState) {
-    LTPlayerStateFailed,     // 播放失败
+    LTPlayerStateFailed = 0,     // 播放失败
     LTPlayerStateBuffering,  //缓冲中
     LTPlayerStatePlaying,    //播放中
     LTPlayerStateStopped,    //停止播放
@@ -40,10 +44,21 @@ typedef NS_ENUM(NSUInteger, LTPlayerState) {
 
 // 滑动手势类型
 typedef NS_ENUM(NSUInteger, LTPanState) {
-    LTPanVerticalState, //上下滑动
+    LTPanVerticalState = 0, //上下滑动
     LTPanHorizontalState //左右滑动
 };
 
+// 播放器控制功能
+typedef NS_ENUM(NSUInteger, VideoControl) {
+    LTBaseControl = 0,  // 基础控制功能
+    LTLoopCongrol,      // AB循环控制功能
+};
+
+// 播放器方向控制
+typedef NS_ENUM(NSUInteger, VideoOrientation) {
+    VideoOrientationPortrait,   // 竖屏模式
+    VideoOrientationLeft,       // 横屏模式
+};
 
 
 @protocol PlayViewDelegate <NSObject>
@@ -62,7 +77,7 @@ typedef NS_ENUM(NSUInteger, LTPanState) {
 
 @property (nonatomic, copy) NSString *url;
 
-/** 播放器控制层 */
+/** 播放器基础控制层 */
 @property (nonatomic, strong) BaseControl *baseControl;
 
 /** 播放器控制层是否显示 */
@@ -73,6 +88,12 @@ typedef NS_ENUM(NSUInteger, LTPanState) {
 
 /** 滑动手势类型 */
 @property (nonatomic, assign) LTPanState panState;
+
+/** 播放器控制功能 */
+@property (nonatomic, assign) VideoControl videoControl;
+
+/** 播放器方向控制 */
+@property (nonatomic, assign) VideoOrientation videoOrientation;
 
 /** 快进快退时间 */
 @property (nonatomic,assign) CGFloat tmpTime;

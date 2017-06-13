@@ -503,9 +503,46 @@
     }
     _url = url;
     
+    [self stop];
+    
     [self addNotification];
     
     [self initUI];
+}
+
+- (void)setVideoControl:(VideoControl)videoControl
+{
+    if (_videoControl != videoControl) {
+        
+        _videoControl = videoControl;
+    }
+    
+    // 根据不同功能模式，加载不同的控制层
+    switch (_videoControl) {
+        
+        // 基础功能层
+        case 0:{
+            
+            
+            
+        }
+            break;
+            
+        // 循环控制层
+        case 1:{
+            
+            
+        }
+            break;
+            
+        // 默认加载基础控制层
+        default:{
+            
+            
+        }
+            break;
+    }
+    
 }
 
 -(void)setState:(LTPlayerState)state
@@ -567,6 +604,32 @@
     
     _bTime = videoInfo.totalTime;
     
+}
+
+
+- (void)setVideoOrientation:(VideoOrientation)videoOrientation
+{
+    if (_videoOrientation != videoOrientation) {
+        
+        _videoOrientation = videoOrientation;
+        
+    }
+    
+    switch (_videoOrientation) {
+        case 0:
+            
+            
+            break;
+            
+        case 1:
+        {
+            [self changeOrientation:UIInterfaceOrientationLandscapeLeft];
+        }
+            
+            break;
+        default:
+            break;
+    }
 }
 
 
