@@ -15,12 +15,7 @@
 
 #define SCREEN_HEIGHT [UIScreen mainScreen].bounds.size.height
 
-#import "HttpTool.h"
-
-
 @interface PlayView ()
-
-
 
 /** 视频播放时间观察者 */
 @property (strong, nonatomic) id timeObserver;
@@ -43,7 +38,7 @@
 @implementation PlayView
 
 #pragma mark - 初始化方法
-- (instancetype)initWithFrame:(CGRect)frame
+- (instancetype)initWithFrame:(CGRect)frame andUrl:(NSString *)url
 {
     self = [super initWithFrame:frame];
     
@@ -54,6 +49,14 @@
         _tmpRect = frame;
         
         _isRotation = NO;
+        
+        // 通过set方法初始化播放层
+        self.url = url;
+        
+        // 通过set方法初始化播放事件
+        self.videoInfo = [self getVideoInfoWithSourceUrl:url];
+        
+        _playerLayerGravity = LTPlayerLayerGravityResizeAspectFill;
         
         // 初始化触摸事件
         [self createGesture];
@@ -145,6 +148,46 @@
     
 }
 
+/**
+ 获取视频信息
+ 
+ @param urlStr 视频路径
+ @return 视频信息字典
+ */
+- (VideoInfo)getVideoInfoWithSourceUrl:(NSString *)urlStr
+{
+    
+    // 存储视频信息
+    VideoInfo info;
+    
+    AVURLAsset *asset = [AVURLAsset assetWithURL:[NSURL URLWithString:urlStr]];
+    
+    // 获得视频总时长
+    CMTime totalTime = [asset duration];
+    
+    info.totalTime = totalTime.value / totalTime.timescale * 1.0;
+    
+    NSArray *tracks = [asset tracksWithMediaType:AVMediaTypeVideo];
+    
+    if ([tracks count] > 0) {
+        
+        AVAssetTrack *videoTrack = [tracks objectAtIndex:0];
+        
+        //        CGAffineTransform t = videoTrack.preferredTransform;//这里的矩阵有旋转角度，转换一下即可
+        
+        CGFloat videoWidth = videoTrack.naturalSize.width;
+        
+        CGFloat videoHeight = videoTrack.naturalSize.height;
+        
+        info.videoWidth = videoWidth;
+        
+        info.videoHeight = videoHeight;
+        
+        
+    }
+    
+    return info;
+}
 
 /**
  视频翻转
@@ -286,7 +329,7 @@
 {
     CMTime aPointTime = CMTimeMake(_aTime, 1);
     
-    CMTime bPointTime = CMTimeMake(_bTime, 1);
+//    CMTime bPointTime = CMTimeMake(_bTime, 1);
     
     [self.player seekToTime:aPointTime];
     
@@ -316,9 +359,7 @@
         {
             track.enabled = enable;
         }
-        
-        
-        
+
     }
 }
 
@@ -417,7 +458,6 @@
 }
 
 #pragma mark --------- set or get ---------
-
 - (void)setPlayerItem:(AVPlayerItem *)playerItem
 {
     if (_playerItem == playerItem) {return;}
@@ -670,7 +710,7 @@
         
         float current = CMTimeGetSeconds(time);
         
-        float total = CMTimeGetSeconds([playerItem duration]);
+//        float total = CMTimeGetSeconds([playerItem duration]);
         
         NSLog(@"当前已经播放%f",current);
         NSLog(@"总时长 = %f", weakself.bTime);

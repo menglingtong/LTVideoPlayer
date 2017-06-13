@@ -90,4 +90,7 @@ typedef NS_ENUM(NSUInteger, LTPanState) {
 
 @property (nonatomic, strong) AVPlayerLayer *playerLayer;
 
+// 自定义初始化方法
+- (instancetype)initWithFrame:(CGRect)frame andUrl:(NSString *)url;
+
 @end

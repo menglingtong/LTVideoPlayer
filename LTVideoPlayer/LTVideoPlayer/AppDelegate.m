@@ -8,7 +8,7 @@
 
 #import "AppDelegate.h"
 
-#import "PlayerController.h"
+#import "ViewController.h"
 
 @interface AppDelegate ()
 
@@ -24,13 +24,10 @@
     
     [self.window makeKeyAndVisible];
     
-    PlayerController *player = [PlayerController shareInstance];
+    ViewController *vc = [ViewController new];
     
-//    player.url = @"http://baobab.wdjcdn.com/145345719887961975219.mp4";
     
-    player.url = @"http://or7u5xu9x.bkt.clouddn.com/test2.mp4";
-    
-    self.window.rootViewController = player;
+    self.window.rootViewController = vc;
     
     
     return YES;

@@ -8,9 +8,9 @@
 
 #import "ViewController.h"
 
-#import "PlayerController.h"
+#import "PlayView.h"
 
-@interface ViewController ()
+@interface ViewController ()<PlayViewDelegate>
 
 @end
 
@@ -19,6 +19,18 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    
+    self.view.backgroundColor = [UIColor whiteColor];
+    
+    NSString *url = @"http://or7u5xu9x.bkt.clouddn.com/test2.mp4";
+    
+    PlayView *player = [[PlayView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 300) andUrl:url];
+    
+    player.delegate = self;
+    
+    
+    [self.view addSubview:player];
+    
 }
 
 

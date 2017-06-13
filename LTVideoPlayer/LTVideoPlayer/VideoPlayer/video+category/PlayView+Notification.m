@@ -10,6 +10,4 @@
 
 @implementation PlayView (Notification)
 
-
-
 @end
