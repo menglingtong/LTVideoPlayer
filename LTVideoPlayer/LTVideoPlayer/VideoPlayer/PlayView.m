@@ -58,13 +58,6 @@
         
         _playerLayerGravity = LTPlayerLayerGravityResizeAspectFill;
         
-        // 初始化触摸事件
-        [self createGesture];
-        
-        // 获取系统音量
-        [self getVolumeOfSystem];
-        
-        [self play];
         
         self.backgroundColor = [UIColor blackColor];
         
@@ -90,6 +83,12 @@
     // 监听播放时间
     [self addProgressObserver];
     
+    // 初始化触摸事件
+    [self createGesture];
+    
+    // 获取系统音量
+    [self getVolumeOfSystem];
+    
 }
 
 
@@ -113,13 +112,6 @@
     // 将playerLayer 添加到 self.layer上
     [self.layer insertSublayer:_playerLayer atIndex:0];
     
-    [self setNeedsLayout];
-    [self layoutIfNeeded];
-    
-    [self createGesture];
-    
-    // 获取系统音量
-    [self getVolumeOfSystem];
 }
 
 /**
@@ -314,13 +306,26 @@
 - (void)didClickedCutBPointButton:(UIButton *)button
 {
     NSLog(@"获取B点时间");
+    
     _bTime =  self.player.currentTime.value / self.player.currentTime.timescale;
     
     NSLog(@"当前时间为B时间 ： %f", _bTime);
     
-    [self videoLoopAtAPointTimeToBPointTime];
+    [self cutVideoFromApointToBpoint];
 }
 
+
+/**
+ 视频剪切
+ */
+- (void)cutVideoFromApointToBpoint
+{
+    if ([self.delegate respondsToSelector:@selector(ABcutFunctionWithATime:andBTime:andVideo:)]) {
+        
+        [self.delegate ABcutFunctionWithATime:[NSString stringWithFormat:@"%.0f",_aTime] andBTime:[NSString stringWithFormat:@"%.0f", _bTime] andVideo:_videoName];
+        
+    }
+}
 
 /**
  视频循环播放
@@ -346,8 +351,6 @@
 {
     for (AVPlayerItemTrack *track in playerItem.tracks)
     {
-        
-        NSLog(@"mediaType ------ %@", track.assetTrack.mediaType);
         
         if ([track.assetTrack.mediaType isEqual:AVMediaTypeVideo]) {
             
@@ -606,7 +609,6 @@
     
 }
 
-
 - (void)setVideoOrientation:(VideoOrientation)videoOrientation
 {
     if (_videoOrientation != videoOrientation) {
@@ -624,6 +626,7 @@
         case 1:
         {
             [self changeOrientation:UIInterfaceOrientationLandscapeLeft];
+            [self setFrame:CGRectMake(0, 0, SCREEN_HEIGHT, SCREEN_WIDTH)];
         }
             
             break;
@@ -631,7 +634,6 @@
             break;
     }
 }
-
 
 #pragma mark --------- KVC about playVideoState---------
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -684,6 +686,7 @@
             // 当缓冲好的时候
             if (self.playerItem.playbackLikelyToKeepUp && self.state == LTPlayerStateBuffering){
                 self.state = LTPlayerStatePlaying;
+                
                 [self play];
                 NSLog(@"缓冲完毕");
             }

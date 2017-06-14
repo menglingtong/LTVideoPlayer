@@ -63,6 +63,8 @@ typedef NS_ENUM(NSUInteger, VideoOrientation) {
 
 @protocol PlayViewDelegate <NSObject>
 
+@required
+- (void)ABcutFunctionWithATime:(NSString *)aTime andBTime:(NSString *)bTime andVideo:(NSString *)video;
 
 @end
 
@@ -74,6 +76,8 @@ typedef NS_ENUM(NSUInteger, VideoOrientation) {
 @property (nonatomic, assign) LTPlayerLayerGravity playerLayerGravity;
 
 @property (nonatomic, assign) VideoInfo videoInfo;
+
+@property (nonatomic, copy) NSString *videoName;
 
 @property (nonatomic, copy) NSString *url;
 
