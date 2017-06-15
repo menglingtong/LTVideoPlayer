@@ -91,6 +91,9 @@ typedef NS_ENUM(NSUInteger, VideoOrientation) {
 /** 播放器循环控制层 */
 @property (nonatomic, strong) LoopControl *loopControl;
 
+/** 主控制层 */
+@property (nonatomic, strong) UIViewController *mainControl;
+
 /** 播放器控制层是否显示 */
 @property (nonatomic,assign) BOOL isPlayControlShow;
 

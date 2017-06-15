@@ -16,7 +16,7 @@
                 <outlet property="bottomBackView" destination="HMb-Iv-9de" id="6wA-Jh-otN"/>
                 <outlet property="currentTimeLabel" destination="nEO-Y9-zOi" id="ScV-dK-gGQ"/>
                 <outlet property="playBtn" destination="PPU-DG-Y3E" id="4sM-wi-lEu"/>
-                <outlet property="progressView" destination="NB7-lk-Eag" id="Qia-48-feL"/>
+                <outlet property="progressView" destination="Jll-IM-tgR" id="thz-yv-mPl"/>
                 <outlet property="titleLabel" destination="p72-5K-l66" id="71a-BF-9gE"/>
                 <outlet property="topBackView" destination="46T-cY-Czn" id="shw-nH-NDm"/>
                 <outlet property="totalTimeLabel" destination="pgV-xP-bGw" id="WTp-Ru-HMm"/>
@@ -56,37 +56,30 @@
                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qin-wj-mWB">
-                            <rect key="frame" x="110" y="13" width="467" height="4"/>
-                            <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                        <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="Jll-IM-tgR">
+                            <rect key="frame" x="108" y="13" width="471" height="5"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="4" id="KNC-2k-m0N"/>
+                                <constraint firstAttribute="height" constant="4" id="p6A-Rv-9fu"/>
                             </constraints>
-                        </view>
-                        <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NB7-lk-Eag">
-                            <rect key="frame" x="110" y="13" width="394" height="4"/>
-                            <color key="backgroundColor" red="1" green="0.75658561739999997" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        </view>
+                            <color key="thumbTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        </slider>
                     </subviews>
                     <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <color key="tintColor" red="1" green="0.75658561739999997" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
-                        <constraint firstItem="qin-wj-mWB" firstAttribute="leading" secondItem="nEO-Y9-zOi" secondAttribute="trailing" constant="20" id="0CJ-P9-bdZ"/>
                         <constraint firstItem="nEO-Y9-zOi" firstAttribute="leading" secondItem="PPU-DG-Y3E" secondAttribute="trailing" constant="10" id="26Q-dW-PUD"/>
                         <constraint firstAttribute="height" constant="30" id="4nY-d1-Bbc"/>
-                        <constraint firstItem="qin-wj-mWB" firstAttribute="centerY" secondItem="HMb-Iv-9de" secondAttribute="centerY" id="AP1-KE-E1b"/>
-                        <constraint firstItem="NB7-lk-Eag" firstAttribute="height" secondItem="qin-wj-mWB" secondAttribute="height" id="AtJ-th-bAh"/>
                         <constraint firstItem="nEO-Y9-zOi" firstAttribute="top" secondItem="HMb-Iv-9de" secondAttribute="top" id="BHz-c9-BmA"/>
+                        <constraint firstItem="pgV-xP-bGw" firstAttribute="leading" secondItem="Jll-IM-tgR" secondAttribute="trailing" constant="20" id="Py4-lP-4JT"/>
                         <constraint firstAttribute="bottom" secondItem="pgV-xP-bGw" secondAttribute="bottom" id="Ql0-Yp-xAU"/>
                         <constraint firstItem="pgV-xP-bGw" firstAttribute="top" secondItem="HMb-Iv-9de" secondAttribute="top" id="RBl-3V-WRK"/>
+                        <constraint firstItem="Jll-IM-tgR" firstAttribute="centerY" secondItem="HMb-Iv-9de" secondAttribute="centerY" id="Rgq-kJ-a8h"/>
                         <constraint firstAttribute="bottom" secondItem="nEO-Y9-zOi" secondAttribute="bottom" id="VeA-vK-Vrt"/>
                         <constraint firstAttribute="bottom" secondItem="PPU-DG-Y3E" secondAttribute="bottom" constant="5" id="XVc-Nh-FKE"/>
                         <constraint firstAttribute="trailing" secondItem="pgV-xP-bGw" secondAttribute="trailing" constant="20" id="Xr2-zw-n4o"/>
-                        <constraint firstItem="pgV-xP-bGw" firstAttribute="leading" secondItem="qin-wj-mWB" secondAttribute="trailing" constant="20" id="enV-bV-RbI"/>
-                        <constraint firstItem="NB7-lk-Eag" firstAttribute="width" secondItem="qin-wj-mWB" secondAttribute="width" id="fnR-bN-fhV"/>
-                        <constraint firstItem="NB7-lk-Eag" firstAttribute="centerY" secondItem="qin-wj-mWB" secondAttribute="centerY" id="hoO-wv-68X"/>
-                        <constraint firstItem="NB7-lk-Eag" firstAttribute="centerX" secondItem="qin-wj-mWB" secondAttribute="centerX" id="jPu-QB-QI0"/>
                         <constraint firstItem="PPU-DG-Y3E" firstAttribute="leading" secondItem="HMb-Iv-9de" secondAttribute="leading" constant="10" id="kco-hu-bfV"/>
                         <constraint firstItem="PPU-DG-Y3E" firstAttribute="top" secondItem="HMb-Iv-9de" secondAttribute="top" constant="5" id="nZ7-Ib-0Qg"/>
+                        <constraint firstItem="Jll-IM-tgR" firstAttribute="leading" secondItem="nEO-Y9-zOi" secondAttribute="trailing" constant="20" id="tsN-kP-o6F"/>
                     </constraints>
                 </view>
                 <view alpha="0.5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="46T-cY-Czn">

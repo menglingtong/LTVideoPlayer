@@ -35,7 +35,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *totalTimeLabel;
 
 /** 倒计时进度 */
-@property (weak, nonatomic) IBOutlet UIView *progressView;
+@property (weak, nonatomic) IBOutlet UISlider *progressView;
+
 
 
 @end

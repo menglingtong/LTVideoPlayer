@@ -610,11 +610,13 @@
                 
                 self.state = LTPlayerStatePlaying;
                 
-                CGFloat totalSecond = _playerItem.duration.value / _playerItem.duration.timescale;// 转换成秒
-                _totalTime = [self convertTime:totalSecond];// 转换成播放时间
-                self.baseControl.totalTimeLabel.text = [NSString stringWithFormat:@"%@",_totalTime];
-                [self monitoringPlayback:self.playerItem];// 监听播放状态
+                // 转换成秒
+                CGFloat totalSecond = _playerItem.duration.value / _playerItem.duration.timescale;
                 
+                // 转换成播放时间
+                _totalTime = [self convertTime:totalSecond];
+                
+                self.baseControl.totalTimeLabel.text = [NSString stringWithFormat:@"%@",_totalTime];
                 
                 
             } else if (self.player.currentItem.status == AVPlayerItemStatusFailed){
@@ -675,29 +677,6 @@
     [_player play];
 }
 
-/**
- *  监听播放进度
- */
-- (void)monitoringPlayback:(AVPlayerItem *)playerItem {
-    
-    //    __weak typeof(self) weakSelf = self;
-    
-    PlayView *weakSelf = self;
-    
-    [_player addPeriodicTimeObserverForInterval:CMTimeMake(1, 1) queue:NULL usingBlock:^(CMTime time) {
-        CGFloat currentSecond = playerItem.currentTime.value/playerItem.currentTime.timescale;// 计算当前在第几秒
-        NSString *timeString = [weakSelf convertTime:currentSecond];
-        
-        CGFloat totalSecond = playerItem.duration.value/playerItem.duration.timescale;
-        
-        weakSelf.baseControl.progressBar.value = currentSecond/totalSecond;
-        
-        weakSelf.baseControl.currentTimeLabel.text = [NSString stringWithFormat:@"%@",timeString];
-        
-    }];
-    
-    
-}
 
 /**
  *  时间转换为显示的格式
@@ -738,13 +717,35 @@
     
     self.timeObserver = [_player addPeriodicTimeObserverForInterval:CMTimeMake(1.0, 1.0) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
         
+        // 计算当前在第几秒
+        CGFloat currentSecond = playerItem.currentTime.value / playerItem.currentTime.timescale;
+        
+        NSString *timeString = [weakself convertTime:currentSecond];
+        
+        CGFloat totalSecond = playerItem.duration.value / playerItem.duration.timescale;
+        
+        if ([weakself currentVideoControl] == 1) {
+            
+            // 控制进度条
+            weakself.baseControl.progressBar.value = currentSecond/totalSecond;
+            
+            weakself.baseControl.currentTimeLabel.text = [NSString stringWithFormat:@"%@",timeString];
+        }
+        else if([weakself currentVideoControl] == 2)
+        {
+            weakself.loopControl.progressView.value = 1 - currentSecond / totalSecond;
+            
+            weakself.loopControl.currentTimeLabel.text = [NSString stringWithFormat:@"%@",timeString];
+        }
+        
+
+        
         float current = CMTimeGetSeconds(time);
         
-//        float total = CMTimeGetSeconds([playerItem duration]);
+//        NSLog(@"当前已经播放%f",current);
+//        NSLog(@"总时长 = %f", weakself.bTime);
         
-        NSLog(@"当前已经播放%f",current);
-        NSLog(@"总时长 = %f", weakself.bTime);
-        
+        // 判断当前播放进度，进行循环播放
         if ((int)current == (int)weakself.bTime) {
             
             [weakself videoLoopAtAPointTimeToBPointTime];
@@ -923,6 +924,11 @@
     }
     
     
+}
+
+- (VideoControl)currentVideoControl
+{
+    return self.videoControl;
 }
 
 /**
