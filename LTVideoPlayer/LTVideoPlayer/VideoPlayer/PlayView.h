@@ -15,7 +15,7 @@
 // 基础控制功能
 #import "BaseControl.h"
 
-// AB循环控制功能
+// 循环控制功能
 #import "LoopControl.h"
 
 typedef struct
@@ -50,8 +50,8 @@ typedef NS_ENUM(NSUInteger, LTPanState) {
 
 // 播放器控制功能
 typedef NS_ENUM(NSUInteger, VideoControl) {
-    LTBaseControl = 0,  // 基础控制功能
-    LTLoopCongrol,      // AB循环控制功能
+    VideoBaseControl = 1,  // 基础控制功能
+    VideoLoopCongrol,      // AB循环控制功能
 };
 
 // 播放器方向控制
@@ -59,6 +59,10 @@ typedef NS_ENUM(NSUInteger, VideoOrientation) {
     VideoOrientationPortrait,   // 竖屏模式
     VideoOrientationLeft,       // 横屏模式
 };
+
+#define kBaseControl @"BaseControl"
+
+#define kLoopControl @"LoopControl"
 
 
 @protocol PlayViewDelegate <NSObject>
@@ -83,6 +87,9 @@ typedef NS_ENUM(NSUInteger, VideoOrientation) {
 
 /** 播放器基础控制层 */
 @property (nonatomic, strong) BaseControl *baseControl;
+
+/** 播放器循环控制层 */
+@property (nonatomic, strong) LoopControl *loopControl;
 
 /** 播放器控制层是否显示 */
 @property (nonatomic,assign) BOOL isPlayControlShow;

@@ -28,8 +28,15 @@
     
     player.delegate = self;
     
+    // 设置播放器功能类型
+    player.videoControl = VideoLoopCongrol;
     
     [self.view addSubview:player];
+    
+}
+
+- (void)ABcutFunctionWithATime:(NSString *)aTime andBTime:(NSString *)bTime andVideo:(NSString *)video
+{
     
 }
 

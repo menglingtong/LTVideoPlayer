@@ -56,6 +56,14 @@
         // 通过set方法初始化播放事件
         self.videoInfo = [self getVideoInfoWithSourceUrl:url];
         
+        // 设置默认控制层
+        if (!self.videoControl) {
+            
+            self.videoControl = VideoBaseControl;
+            
+        }
+        
+        
         _playerLayerGravity = LTPlayerLayerGravityResizeAspectFill;
         
         
@@ -76,9 +84,6 @@
     
     // 添加播放控制层
     [self initPlayControl];
-    
-    // 添加控制按钮点击事件
-    [self addNotification];
     
     // 监听播放时间
     [self addProgressObserver];
@@ -120,11 +125,11 @@
 - (void)initPlayControl
 {
     
-    self.baseControl.view.frame = CGRectMake(0, 0, _startFrame.size.width, _startFrame.size.height);
+//    self.baseControl.view.frame = CGRectMake(0, 0, _startFrame.size.width, _startFrame.size.height);
     
-    [self addSubview:_baseControl.view];
+//    [self addSubview:_baseControl.view];
     
-    self.baseControl.cutBtn.selected = NO;
+//    self.baseControl.cutBtn.selected = NO;
 }
 
 /**
@@ -232,13 +237,13 @@
     if (button.selected) {
         
         // 从播放状态转入暂停状态
-        [self.baseControl.playBtn setImage:[UIImage imageNamed:@"play"] forState:UIControlStateNormal];
+        [button setImage:[UIImage imageNamed:@"play"] forState:UIControlStateNormal];
         [self pause];
         
     } else {
         
         // 从暂停状态转入播放状态
-        [self.baseControl.playBtn setImage:[UIImage imageNamed:@"pause"] forState:UIControlStateNormal];
+        [button setImage:[UIImage imageNamed:@"pause"] forState:UIControlStateNormal];
         [self play];
     }
 }
@@ -328,47 +333,6 @@
 }
 
 /**
- 视频循环播放
- */
-- (void)videoLoopAtAPointTimeToBPointTime
-{
-    CMTime aPointTime = CMTimeMake(_aTime, 1);
-    
-//    CMTime bPointTime = CMTimeMake(_bTime, 1);
-    
-    [self.player seekToTime:aPointTime];
-    
-}
-
-
-/**
- 视频慢速播放
-
- @param enable NO 慢速播放， YES 正常播放
- @param playerItem playerItem
- */
-- (void)enableAudioTracks:(BOOL)enable inPlayerItem:(AVPlayerItem *)playerItem
-{
-    for (AVPlayerItemTrack *track in playerItem.tracks)
-    {
-        
-        if ([track.assetTrack.mediaType isEqual:AVMediaTypeVideo]) {
-            
-            
-            track.enabled = enable;
-        }
-        
-        if ([track.assetTrack.mediaType isEqual:AVMediaTypeAudio])
-        {
-            track.enabled = enable;
-        }
-
-    }
-}
-
-
-
-/**
  全屏按钮点击方法
  
  @param button 全屏按钮
@@ -411,32 +375,6 @@
                                                  name:UIDeviceOrientationDidChangeNotification
                                                object:nil
      ];
-    
-    // 返回按钮点击方法
-    [self.baseControl.backBtn addTarget:self action:@selector(didClickedBackButton:) forControlEvents:UIControlEventTouchUpInside];
-    
-    // 播放按钮点击方法 按下的方法
-    [self.baseControl.playBtn addTarget:self action:@selector(didClickedPlayButton:) forControlEvents:UIControlEventTouchUpInside];
-    
-    // 镜像按钮点击方法
-    [self.baseControl.mirrorBtn addTarget:self action:@selector(didClickedMirrorButton:) forControlEvents:UIControlEventTouchUpInside];
-    
-    // 慢速按钮点击方法
-    [self.baseControl.slowBtn addTarget:self action:@selector(didClickedSlowButton:) forControlEvents:UIControlEventTouchUpInside];
-    
-    // AB循环按钮点击方法 抬起获取B点时间
-    [self.baseControl.cutBtn addTarget:self action:@selector(didClickedCutBPointButton:) forControlEvents:UIControlEventTouchUpInside];
-    
-    // AB循环按钮点击方法 按下获取A点时间
-    [self.baseControl.cutBtn addTarget:self action:@selector(didClickedCutAPointButton:) forControlEvents:UIControlEventTouchDown];
-    
-    // 全屏按钮
-    [self.baseControl.fullScreenBtn addTarget:self action:@selector(didClickedFullScreenButton:) forControlEvents:UIControlEventTouchUpInside];
-    
-    
-    [self.baseControl.progressBar addTarget:self action:@selector(touchDownSlider:) forControlEvents:UIControlEventTouchDown];
-    [self.baseControl.progressBar addTarget:self action:@selector(valueChangeSlider:) forControlEvents:UIControlEventValueChanged];
-    [self.baseControl.progressBar addTarget:self action:@selector(endSlider:) forControlEvents:UIControlEventTouchCancel|UIControlEventTouchUpOutside|UIControlEventTouchUpInside];
     
 }
 
@@ -508,9 +446,10 @@
     
     [self stop];
     
-    [self addNotification];
-    
     [self initUI];
+    
+    // 添加通知监控
+    [self addNotification];
 }
 
 - (void)setVideoControl:(VideoControl)videoControl
@@ -522,25 +461,64 @@
     
     // 根据不同功能模式，加载不同的控制层
     switch (_videoControl) {
-        
-        // 基础功能层
-        case 0:{
             
-            
-            
-        }
-            break;
-            
-        // 循环控制层
+            // 基础功能层
         case 1:{
             
+            // 判断 loopControl.view 是否是 self 的子视图，若添加则移除
+            [self checkControlViewWithControlVC:self.loopControl];
+            
+            if (!_baseControl) {
+                
+                self.baseControl = (BaseControl *)[self createControlViewWithFunctionName:kBaseControl];
+                
+                [self addSubview:self.baseControl.view];
+                
+                // 为当前层添加按钮点击事件
+                [self addClickFunctionWithFunctionName:kBaseControl];
+                
+            }
+
             
         }
             break;
             
-        // 默认加载基础控制层
+            // 循环控制层
+        case 2:{
+            
+            // 判断 baseControl.view 是否是 self 的子视图，若添加则移除
+            [self checkControlViewWithControlVC:self.baseControl];
+            
+            if (!_loopControl) {
+                
+                self.loopControl = (LoopControl *)[self createControlViewWithFunctionName:kLoopControl];
+                
+                [self addSubview:self.loopControl.view];
+                
+                // 为当前层添加按钮点击事件
+                [self addClickFunctionWithFunctionName:kLoopControl];
+                
+            }
+            
+        }
+            break;
+            
+            // 默认加载基础控制层
         default:{
             
+            // 判断 loopControl.view 是否是 self 的子视图，若添加则移除
+            [self checkControlViewWithControlVC:self.loopControl];
+            
+            if (!_baseControl) {
+                
+                self.baseControl = (BaseControl *)[self createControlViewWithFunctionName:kBaseControl];
+                
+                [self addSubview:self.baseControl.view];
+                
+                // 为当前层添加按钮点击事件
+                [self addClickFunctionWithFunctionName:kBaseControl];
+                
+            }
             
         }
             break;
@@ -583,20 +561,6 @@
             break;
     }
     
-}
-
-- (BaseControl *)baseControl
-{
-    if (_baseControl == nil) {
-        
-        _baseControl = [[BaseControl alloc] init];
-        
-        
-    }
-    
-    [self addSubview:_baseControl.view];
-    
-    return _baseControl;
 }
 
 - (void)setVideoInfo:(VideoInfo)videoInfo
@@ -877,7 +841,129 @@
 }
 
 
-#pragma mark --------- 播放层控制 -------
+#pragma mark - 功能方法 ： 动态生成控制层，慢速播放，循环播放
+/**
+ 根据功能名称动态创建控制层VC
+ 
+ @param name 控制层名称
+ @return 控制层VC
+ */
+- (UIViewController *)createControlViewWithFunctionName:(NSString *)name
+{
+    // 根据视频控制名称创建控制层
+    UIViewController *controlVC = (UIViewController *)[[NSClassFromString(name) alloc] init];
+    
+    controlVC.view.frame = _startFrame;
+    
+    return controlVC;
+}
+
+
+/**
+ 检测控制层是否已经添加，若已添加，移除
+ 
+ @param vc 被检测的控制层
+ */
+- (void)checkControlViewWithControlVC:(UIViewController *)vc
+{
+    // 判断 vc.view 是否是 self 的子视图
+    if ([vc.view isDescendantOfView:self]) {
+        
+        [vc.view removeFromSuperview];
+        
+        vc = nil;
+        
+    }
+}
+
+/**
+ 根据控制层添加点击事件
+ */
+- (void)addClickFunctionWithFunctionName:(NSString *)name
+{
+    
+    if ([name isEqualToString:kBaseControl]) {
+        
+        // 返回按钮点击方法
+        [self.baseControl.backBtn addTarget:self action:@selector(didClickedBackButton:) forControlEvents:UIControlEventTouchUpInside];
+        
+        // 播放按钮点击方法 按下的方法
+        [self.baseControl.playBtn addTarget:self action:@selector(didClickedPlayButton:) forControlEvents:UIControlEventTouchUpInside];
+        
+        // 镜像按钮点击方法
+        [self.baseControl.mirrorBtn addTarget:self action:@selector(didClickedMirrorButton:) forControlEvents:UIControlEventTouchUpInside];
+        
+        // 慢速按钮点击方法
+        [self.baseControl.slowBtn addTarget:self action:@selector(didClickedSlowButton:) forControlEvents:UIControlEventTouchUpInside];
+        
+        // AB循环按钮点击方法 抬起获取B点时间
+        [self.baseControl.cutBtn addTarget:self action:@selector(didClickedCutBPointButton:) forControlEvents:UIControlEventTouchUpInside];
+        
+        // AB循环按钮点击方法 按下获取A点时间
+        [self.baseControl.cutBtn addTarget:self action:@selector(didClickedCutAPointButton:) forControlEvents:UIControlEventTouchDown];
+        
+        // 全屏按钮
+        [self.baseControl.fullScreenBtn addTarget:self action:@selector(didClickedFullScreenButton:) forControlEvents:UIControlEventTouchUpInside];
+        
+        
+        [self.baseControl.progressBar addTarget:self action:@selector(touchDownSlider:) forControlEvents:UIControlEventTouchDown];
+        [self.baseControl.progressBar addTarget:self action:@selector(valueChangeSlider:) forControlEvents:UIControlEventValueChanged];
+        [self.baseControl.progressBar addTarget:self action:@selector(endSlider:) forControlEvents:UIControlEventTouchCancel|UIControlEventTouchUpOutside|UIControlEventTouchUpInside];
+        
+    }
+    else if ([name isEqualToString:kLoopControl])
+    {
+        
+        // 返回按钮点击方法
+        [self.loopControl.backBtn addTarget:self action:@selector(didClickedBackButton:) forControlEvents:UIControlEventTouchUpInside];
+        
+        // 播放按钮点击方法 按下的方法
+        [self.loopControl.playBtn addTarget:self action:@selector(didClickedPlayButton:) forControlEvents:UIControlEventTouchUpInside];
+        
+    }
+    
+    
+}
+
+/**
+ 视频循环播放
+ */
+- (void)videoLoopAtAPointTimeToBPointTime
+{
+    CMTime aPointTime = CMTimeMake(_aTime, 1);
+    
+    //    CMTime bPointTime = CMTimeMake(_bTime, 1);
+    
+    [self.player seekToTime:aPointTime];
+    
+}
+
+
+/**
+ 视频慢速播放
+ 
+ @param enable NO 慢速播放， YES 正常播放
+ @param playerItem playerItem
+ */
+- (void)enableAudioTracks:(BOOL)enable inPlayerItem:(AVPlayerItem *)playerItem
+{
+    for (AVPlayerItemTrack *track in playerItem.tracks)
+    {
+        
+        if ([track.assetTrack.mediaType isEqual:AVMediaTypeVideo]) {
+            
+            
+            track.enabled = enable;
+        }
+        
+        if ([track.assetTrack.mediaType isEqual:AVMediaTypeAudio])
+        {
+            track.enabled = enable;
+        }
+        
+    }
+}
+
 - (void)dealloc
 {
     // 移除监听

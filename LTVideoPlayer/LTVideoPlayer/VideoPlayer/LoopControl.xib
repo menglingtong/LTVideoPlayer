@@ -20,6 +20,7 @@
                 <outlet property="titleLabel" destination="p72-5K-l66" id="71a-BF-9gE"/>
                 <outlet property="topBackView" destination="46T-cY-Czn" id="shw-nH-NDm"/>
                 <outlet property="totalTimeLabel" destination="pgV-xP-bGw" id="WTp-Ru-HMm"/>
+                <outlet property="view" destination="2FR-gp-k1a" id="5CD-Zy-m5T"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -123,12 +124,12 @@
                     <rect key="frame" x="617" y="80" width="50" height="215"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FHh-9n-gT7">
-                            <rect key="frame" x="10" y="50" width="30" height="29"/>
+                            <rect key="frame" x="10" y="35" width="30" height="29"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <state key="normal" title="收藏"/>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0AE-Yr-lty">
-                            <rect key="frame" x="10" y="136" width="30" height="29"/>
+                            <rect key="frame" x="10" y="151" width="30" height="29"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <state key="normal" title="同屏"/>
                         </button>
@@ -137,8 +138,8 @@
                     <constraints>
                         <constraint firstAttribute="width" constant="50" id="BSW-MB-s8y"/>
                         <constraint firstAttribute="trailing" secondItem="0AE-Yr-lty" secondAttribute="trailing" constant="10" id="Huc-SJ-shQ"/>
-                        <constraint firstItem="FHh-9n-gT7" firstAttribute="top" secondItem="c8s-K4-ZR8" secondAttribute="top" constant="50" id="lax-m4-1q1"/>
-                        <constraint firstAttribute="bottom" secondItem="0AE-Yr-lty" secondAttribute="bottom" constant="50" id="mS6-Gi-uh0"/>
+                        <constraint firstItem="FHh-9n-gT7" firstAttribute="top" secondItem="c8s-K4-ZR8" secondAttribute="top" constant="35" id="lax-m4-1q1"/>
+                        <constraint firstAttribute="bottom" secondItem="0AE-Yr-lty" secondAttribute="bottom" constant="35" id="mS6-Gi-uh0"/>
                         <constraint firstItem="0AE-Yr-lty" firstAttribute="leading" secondItem="c8s-K4-ZR8" secondAttribute="leading" constant="10" id="ml0-8c-EIW"/>
                         <constraint firstItem="FHh-9n-gT7" firstAttribute="leading" secondItem="c8s-K4-ZR8" secondAttribute="leading" constant="10" id="oMc-f7-gH5"/>
                         <constraint firstAttribute="trailing" secondItem="FHh-9n-gT7" secondAttribute="trailing" constant="10" id="xoX-MF-Vw5"/>
