@@ -110,6 +110,8 @@
         
         [self addObserverWithPlayItem:self.playerItem];
         
+        [self addNotificatonForPlayer];
+        
         
     }
 }
@@ -177,6 +179,7 @@
     
     self.timeObserver = [self.player addPeriodicTimeObserverForInterval:CMTimeMake(1.0, 1.0) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
         
+        weakself.state = LTPlayerStatePlaying;
         
         float current        = CMTimeGetSeconds(time);                  // 获取当前在第几秒
         
@@ -266,7 +269,7 @@
     
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     
-    [center addObserver:self selector:@selector(playbackFinished:) name:AVPlayerItemDidPlayToEndTimeNotification object:_playerItem];
+    [center addObserver:self selector:@selector(playbackFinished) name:AVPlayerItemDidPlayToEndTimeNotification object:self.player.currentItem];
     
     [center addObserver:self selector:@selector(videoPlayError:) name:AVPlayerItemPlaybackStalledNotification object:_playerItem];
     
@@ -331,6 +334,8 @@
         NSLog(@"预播放状态改变");
         
         if (self.player.currentItem.status == AVPlayerItemStatusReadyToPlay) {
+            
+            [self play];
             
             self.state = LTPlayerStateBuffering; // 播放器准备好，开始缓存
             
@@ -418,10 +423,10 @@
  */
 - (void)play
 {
-    if (self.player.rate == 0) {
-        
+//    if (self.player.rate == 0) {
+    
         [self.player play];
-    }
+//    }
     
 }
 
@@ -431,10 +436,10 @@
  */
 - (void)pause
 {
-    if (self.player.rate == 1.0) {
-        
+//    if (self.player.rate == 1.0) {
+    
         [self.player pause];
-    }
+//    }
 }
 
 
@@ -982,10 +987,8 @@
 #pragma mark - 通知回调方法
 /**
  *  播放完成通知
- *
- *  @param notification 通知对象
  */
--(void)playbackFinished:(NSNotification *)notification{
+-(void)playbackFinished{
     NSLog(@"视频播放完成.");
     
     

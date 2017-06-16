@@ -71,7 +71,7 @@
                             <state key="normal" title="Button" image="playerFullScreen"/>
                         </button>
                         <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="nrl-36-ydU">
-                            <rect key="frame" x="110" y="14.5" width="447" height="1"/>
+                            <rect key="frame" x="110" y="15" width="447" height="1"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="1" id="WPh-Pq-D0B"/>
                             </constraints>
@@ -190,7 +190,8 @@
                 </button>
                 <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="aNJ-5e-USg">
                     <rect key="frame" x="315" y="169" width="37" height="37"/>
-                    <color key="color" red="0.0010629586176946759" green="0.61509525775909424" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="backgroundColor" red="0.41092312335968018" green="0.27199006080627441" blue="0.07636859267950058" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="color" red="0.97618597745895386" green="0.86512142419815063" blue="0.001174871576949954" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 </activityIndicatorView>
             </subviews>
             <constraints>
