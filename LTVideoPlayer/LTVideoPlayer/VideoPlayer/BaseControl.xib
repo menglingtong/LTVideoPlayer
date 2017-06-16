@@ -9,8 +9,9 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PlayViewControl">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BaseControl">
             <connections>
+                <outlet property="activityIndicator" destination="aNJ-5e-USg" id="7tR-aM-xrU"/>
                 <outlet property="assistView" destination="elr-qS-yZB" id="klk-oQ-SXU"/>
                 <outlet property="backBtn" destination="d6E-mA-yB4" id="iZM-SX-de2"/>
                 <outlet property="bottomBackView" destination="jR6-Z6-c5b" id="x9E-FK-Cfr"/>
@@ -70,7 +71,7 @@
                             <state key="normal" title="Button" image="playerFullScreen"/>
                         </button>
                         <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="nrl-36-ydU">
-                            <rect key="frame" x="110" y="15" width="447" height="1"/>
+                            <rect key="frame" x="110" y="14.5" width="447" height="1"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="1" id="WPh-Pq-D0B"/>
                             </constraints>
@@ -187,11 +188,17 @@
                     </constraints>
                     <state key="normal" title="Button" image="unlock"/>
                 </button>
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="aNJ-5e-USg">
+                    <rect key="frame" x="315" y="169" width="37" height="37"/>
+                    <color key="color" red="0.0010629586176946759" green="0.61509525775909424" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                </activityIndicatorView>
             </subviews>
             <constraints>
                 <constraint firstItem="yVE-lu-xlY" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="05R-is-kYa"/>
                 <constraint firstItem="bYH-4s-td9" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="24a-DE-9sL"/>
+                <constraint firstItem="aNJ-5e-USg" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="4FY-85-zn3"/>
                 <constraint firstItem="bYH-4s-td9" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="8hu-D5-xcY"/>
+                <constraint firstItem="aNJ-5e-USg" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="Fd1-p7-Yde"/>
                 <constraint firstItem="bYH-4s-td9" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="GM9-65-vif"/>
                 <constraint firstAttribute="trailing" secondItem="jR6-Z6-c5b" secondAttribute="trailing" id="MGP-EI-eEd"/>
                 <constraint firstItem="yVE-lu-xlY" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="50" id="Qs6-sH-edR"/>

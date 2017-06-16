@@ -35,11 +35,13 @@ typedef NS_ENUM(NSUInteger, LTPlayerLayerGravity) {
 
 // 播放器的状态
 typedef NS_ENUM(NSUInteger, LTPlayerState) {
-    LTPlayerStateFailed = 0,     // 播放失败
-    LTPlayerStateBuffering,  //缓冲中
-    LTPlayerStatePlaying,    //播放中
-    LTPlayerStateStopped,    //停止播放
-    LTPlayerStatePause       //暂停播放
+    LTPlayerStateFailed = 0, // 播放失败
+    LTPlayerStateError,      // 播放出错
+    LTPlayerStateReady,      // 播放器准备好了
+    LTPlayerStateBuffering,  // 缓冲中
+    LTPlayerStatePlaying,    // 播放中
+    LTPlayerStateStopped,    // 停止播放
+    LTPlayerStatePause       // 暂停播放
 };
 
 // 滑动手势类型
@@ -65,10 +67,13 @@ typedef NS_ENUM(NSUInteger, VideoOrientation) {
 #define kLoopControl @"LoopControl"
 
 
+
 @protocol PlayViewDelegate <NSObject>
 
 @required
 - (void)ABcutFunctionWithATime:(NSString *)aTime andBTime:(NSString *)bTime andVideo:(NSString *)video;
+
+- (void)playerStatusDidChange:(LTPlayerState)status;
 
 @end
 
@@ -91,9 +96,6 @@ typedef NS_ENUM(NSUInteger, VideoOrientation) {
 /** 播放器循环控制层 */
 @property (nonatomic, strong) LoopControl *loopControl;
 
-/** 主控制层 */
-@property (nonatomic, strong) UIViewController *mainControl;
-
 /** 播放器控制层是否显示 */
 @property (nonatomic,assign) BOOL isPlayControlShow;
 
@@ -112,9 +114,6 @@ typedef NS_ENUM(NSUInteger, VideoOrientation) {
 /** 快进快退时间 */
 @property (nonatomic,assign) CGFloat tmpTime;
 
-/** 初始frame */
-@property (nonatomic, assign) CGRect startFrame;
-
 /** 音量滑条 */
 @property (nonatomic, strong) UISlider *volumeSlider;
 
@@ -125,7 +124,18 @@ typedef NS_ENUM(NSUInteger, VideoOrientation) {
 
 @property (nonatomic, strong) AVPlayerLayer *playerLayer;
 
-// 自定义初始化方法
-- (instancetype)initWithFrame:(CGRect)frame andUrl:(NSString *)url;
+
+#pragma mark - 方法
+- (void)play;                               // 播放
+
+- (void)pause;                              // 暂停
+
+- (void)stop;                               // 停止
+
+- (void)setupPlayerWithUrl:(NSString *)url; // 准备播放器
+
+- (void)replacePalyerItem:(NSString *)url;  // 切换视频播放
+
+
 
 @end

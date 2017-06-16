@@ -55,6 +55,7 @@
 
 @property (weak, nonatomic) IBOutlet UIProgressView *playerProgressView;
 
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 /** 显示控制层 */
 - (void) showControlView;

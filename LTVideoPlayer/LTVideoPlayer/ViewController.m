@@ -24,7 +24,9 @@
     
     NSString *url = @"http://or7u5xu9x.bkt.clouddn.com/test2.mp4";
     
-    PlayView *player = [[PlayView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 300) andUrl:url];
+    PlayView *player = [[PlayView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 300)];
+    
+    [player setupPlayerWithUrl:url];
     
     player.delegate = self;
     
@@ -36,6 +38,11 @@
 }
 
 - (void)ABcutFunctionWithATime:(NSString *)aTime andBTime:(NSString *)bTime andVideo:(NSString *)video
+{
+    
+}
+
+- (void)playerStatusDidChange:(LTPlayerState)status
 {
     
 }
