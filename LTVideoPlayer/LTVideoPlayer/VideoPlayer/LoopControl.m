@@ -16,7 +16,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    
+    // 设置UISlider
+    _progressView.maximumTrackTintColor = [UIColor colorWithRed:0.33 green:0.33 blue:0.33 alpha:1.00];
+    _progressView.minimumTrackTintColor = [UIColor colorWithRed:0.22 green:0.89 blue:0.99 alpha:1.00];
+    
+    [_progressView setThumbImage:[UIImage imageNamed:@"sliderBtn"] forState:UIControlStateNormal];
+    
 }
 
 - (void)didReceiveMemoryWarning {

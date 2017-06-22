@@ -73,6 +73,8 @@ typedef NS_ENUM(NSUInteger, VideoOrientation) {
 @required
 - (void)ABcutFunctionWithATime:(NSString *)aTime andBTime:(NSString *)bTime andVideo:(NSString *)video;
 
+- (void)goRecordVC;
+
 - (void)playerStatusDidChange:(LTPlayerState)status;
 
 @end

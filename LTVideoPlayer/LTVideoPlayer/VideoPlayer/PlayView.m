@@ -112,7 +112,6 @@
         
         [self addNotificatonForPlayer];
         
-        
     }
 }
 
@@ -557,6 +556,7 @@
         // 播放按钮点击方法 按下的方法
         [self.loopControl.playBtn addTarget:self action:@selector(didClickedPlayButton:) forControlEvents:UIControlEventTouchUpInside];
         
+        [self.loopControl.goRecordBtn addTarget:self action:@selector(didClickedGoRecordButton:) forControlEvents:UIControlEventTouchUpInside];
     }
     
 }
@@ -683,7 +683,7 @@
         
         AVAssetTrack *videoTrack = [tracks objectAtIndex:0];
         
-        //        CGAffineTransform t = videoTrack.preferredTransform;//这里的矩阵有旋转角度，转换一下即可
+//        CGAffineTransform t = videoTrack.preferredTransform;//这里的矩阵有旋转角度，转换一下即可
         
         CGFloat videoWidth = videoTrack.naturalSize.width;
         
@@ -792,6 +792,13 @@
     //    NSLog(@"返回！返回！");
 }
 
+- (void)didClickedGoRecordButton:(UIButton *)button
+{
+    if ([self.delegate respondsToSelector:@selector(goRecordVC)]) {
+        [self.delegate goRecordVC];
+    }
+}
+
 
 /**
  *  镜像按钮点击方法
@@ -801,6 +808,17 @@
 - (void)didClickedMirrorButton:(UIButton *)button
 {
     //    NSLog(@"镜像！镜像！");
+    
+    button.selected = !button.selected;
+    
+    if (button.selected) {
+        
+        [button setImage:[UIImage imageNamed:@"clickMirror"] forState:UIControlStateNormal];
+    }
+    else
+    {
+        [button setImage:[UIImage imageNamed:@"unclickMirror"] forState:UIControlStateNormal];
+    }
     
     [self videoTransform];
 }
@@ -848,7 +866,17 @@
     
     //    NSLog(@"当前时间为B时间 ： %f", _bTime);
     
-    [self cutVideoFromApointToBpoint];
+    CGFloat cutTime = _bTime - _aTime;
+    
+    // 三秒以内不截取
+    if (cutTime < 3.0f) {
+        
+        return;
+    }
+    else
+    {
+        [self cutVideoFromApointToBpoint];
+    }
 }
 
 /**

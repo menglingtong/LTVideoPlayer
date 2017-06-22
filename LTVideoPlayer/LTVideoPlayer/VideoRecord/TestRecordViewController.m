@@ -8,6 +8,8 @@
 
 #import "TestRecordViewController.h"
 
+#import "DoublePlayerVC.h"
+
 #import <AVFoundation/AVFoundation.h>
 
 #import <AssetsLibrary/AssetsLibrary.h>
@@ -66,17 +68,38 @@ typedef void(^PropertyChangeBlock) (AVCaptureDevice * captureDevice);
 // 倒计时label
 @property (nonatomic, strong) UILabel *timeLabel;
 
+// 计时器
 @property (nonatomic, strong) NSTimer *timer;
 
+// 录像最长时长 -- 由截屏页面传入
 @property (nonatomic, assign) NSUInteger recordingTime;
 
+// 倒计时使用
 @property (nonatomic, assign) NSUInteger countDown;
 
+// 倒计时进度条
 @property (nonatomic, strong) UIView *progressLine;
 
+// 底部透明视图
 @property (nonatomic, strong) UIView *bottomView;
 
+// 顶部透明视图
+@property (nonatomic, strong) UIView *topView;
+
+@property (nonatomic, strong) UILabel *startTimeLabel;
+
+@property (nonatomic, strong) UILabel *endTimeLabel;
+
+@property (nonatomic, strong) UILabel *topTimeLabel;
+
+// 当期那是否暂停，默认否
 @property (nonatomic, assign) BOOL isPauseRecording;
+
+// videoOutPut 用于视频数据流处理
+@property (nonatomic, strong) AVCaptureVideoDataOutput *videoOutPut;
+
+// audioOutPut 用于音频数据流输出
+@property (nonatomic, strong) AVCaptureAudioDataOutput *audioOutPut;
 
 @end
 
@@ -85,6 +108,9 @@ typedef void(^PropertyChangeBlock) (AVCaptureDevice * captureDevice);
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    
+    [self changeOrientation:UIInterfaceOrientationPortrait];
     
     self.view.backgroundColor = [UIColor whiteColor];
     self.title = @"自定义拍照和视频录制控件";
@@ -105,7 +131,12 @@ typedef void(^PropertyChangeBlock) (AVCaptureDevice * captureDevice);
 
 - (void)startTimer
 {
+    
+    self.timeLabel.alpha = 1;
+    
     __block NSUInteger timeout = showtime + 1;
+    
+    self.timeLabel.text = [NSString stringWithFormat:@"%zd", timeout];
     
     if (_timer == nil) {
         
@@ -141,7 +172,7 @@ typedef void(^PropertyChangeBlock) (AVCaptureDevice * captureDevice);
         
     } completion:^(BOOL finished) {
     
-        [self.timeLabel removeFromSuperview];
+//        [self.timeLabel removeFromSuperview];
         
         [self.timer invalidate];
         self.timer = nil;
@@ -160,38 +191,74 @@ typedef void(^PropertyChangeBlock) (AVCaptureDevice * captureDevice);
     
     self.contentView.frame = CGRectMake(0, 0, ScreenWith, ScreenHeight);
     
+    // topView
+    self.topView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWith, 30)];
+    
+    self.topView.backgroundColor = [UIColor colorWithRed:49/255.0 green:50/255.0 blue:50/255.0 alpha:0.7099999785423279/1.0];
+    
+    [self.view addSubview:_topView];
+    
+    self.topTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(144, 6, 88, 19)];
+    
+    self.topTimeLabel.text = @"00:00 - 00:15";
+    
+    self.topTimeLabel.font = [UIFont systemFontOfSize:13];
+    
+    self.topTimeLabel.textColor = [UIColor whiteColor];
+    
+    [self.topView addSubview:_topTimeLabel];
+    
+    UIView *circel = [[UIView alloc] initWithFrame:CGRectMake(125, 12.5, 6, 5)];
+    
+    circel.backgroundColor =  [UIColor colorWithRed:207/255.0 green:207/255.0 blue:207/255.0 alpha:1/1.0];;
+    
+    circel.layer.cornerRadius = 3;
+    
+    circel.layer.masksToBounds = YES;
+    
+    [self.topView addSubview:circel];
+    
     // 初始倒计时
-    self.timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWith / 2.0 - 15, 50, 30, 30)];
+    self.timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(ScreenWith / 2.9, ScreenHeight / 4, ScreenWith / 3, ScreenHeight / 2.8)];
     
-    self.timeLabel.textColor = [UIColor yellowColor];
+    self.timeLabel.font = [UIFont systemFontOfSize:200];
     
-    self.timeLabel.backgroundColor = [UIColor greenColor];
+    self.timeLabel.textColor = [UIColor whiteColor];
+    
+    //    self.timeLabel.backgroundColor = [UIColor greenColor];
     
     self.timeLabel.textAlignment = 1;
     
     [self.view addSubview:_timeLabel];
     
-    self.bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, ScreenHeight - 90, ScreenWith, 81)];
+    
+    self.bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, ScreenHeight - 90, ScreenWith, 90)];
+    
+    self.bottomView.backgroundColor =  [UIColor colorWithRed:49/255.0 green:50/255.0 blue:50/255.0 alpha:0.7099999785423279/1.0];
     
     [self.view addSubview:_bottomView];
     
     
     
     // 图像倒计时横条
-    _progressLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWith, 2)];
-    _progressLine.backgroundColor = [UIColor colorWithRed:0.52 green:0.84 blue:0.35 alpha:1.00];
-    _progressLine.hidden = YES;
-    [self.bottomView addSubview:_progressLine];
+//    _progressLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenWith, 2)];
+//    _progressLine.backgroundColor = [UIColor colorWithRed:0.52 green:0.84 blue:0.35 alpha:1.00];
+//    _progressLine.hidden = YES;
+//    
+//    [self.bottomView addSubview:_progressLine];
     
 //    self.takeButton = [self createCustomButtonWithName:@"拍照"];
 //    [self.takeButton addTarget:self action:@selector(clickTakeButton:) forControlEvents:UIControlEventTouchUpInside];
 //    self.takeButton.frame = CGRectMake(ScreenWith/2-30, ScreenHeight-60, 60, 60);
 //    [self.view addSubview:self.takeButton];
     
-    self.videoButton = [self createCustomButtonWithName:@"开始"];
+    self.videoButton = [self createCustomButtonWithName:nil];
+    
+    [self.videoButton setImage:[UIImage imageNamed:@"clickRecord"] forState:UIControlStateNormal];
+    
     [self.videoButton addTarget:self action:@selector(clickVideoButton:) forControlEvents:UIControlEventTouchUpInside];
 //    self.videoButton.frame = CGRectMake(ScreenWith-80, ScreenHeight-60, 60, 60);
-    self.videoButton.frame = CGRectMake(ScreenWith/2-30, 10, 60, 60);
+    self.videoButton.frame = CGRectMake(ScreenWith/2-45, 0, 98, 90);
     [self.bottomView addSubview:self.videoButton];
     
     
@@ -245,10 +312,12 @@ typedef void(^PropertyChangeBlock) (AVCaptureDevice * captureDevice);
 - (void)initCamera{
     //初始化会话
     _captureSession = [[AVCaptureSession alloc] init];
+    
     //设置分辨率
     if ([_captureSession canSetSessionPreset:AVCaptureSessionPreset1280x720]) {
         _captureSession.sessionPreset=AVCaptureSessionPreset1280x720;
     }
+    
     //获得输入设备
     AVCaptureDevice * captureDevice = [self getCameraDeviceWithPosition:AVCaptureDevicePositionBack];
     if (!captureDevice) {
@@ -259,14 +328,26 @@ typedef void(^PropertyChangeBlock) (AVCaptureDevice * captureDevice);
     NSError * error = nil;
     
     //添加一个音频输入设备
-    AVCaptureDevice * audioCaptureDevice = [[AVCaptureDevice devicesWithMediaType:AVMediaTypeAudio] firstObject];
-    AVCaptureDeviceInput * audioCaptureDeviceInput = [[AVCaptureDeviceInput alloc] initWithDevice:audioCaptureDevice error:&error];
+    AVCaptureDevice      * audioCaptureDevice       = [[AVCaptureDevice devicesWithMediaType:AVMediaTypeAudio] firstObject];
+    AVCaptureDeviceInput * audioCaptureDeviceInput  = [[AVCaptureDeviceInput alloc] initWithDevice:audioCaptureDevice error:&error];
     if (error) {
         NSLog(@"获得设备输入对象时出错，错误原因：%@",error.localizedDescription);
         return;
     }
-    
+#warning output 在这里开始了
     _captureMovieFileOutPut = [[AVCaptureMovieFileOutput alloc] init];
+    
+    
+    
+#pragma mark - videoDataOutPut && audioDataOutPut
+    _videoOutPut = [[AVCaptureVideoDataOutput alloc] init];
+    
+    
+    
+    
+    
+    
+    
     
     //根据输入设备初始化设备输入对象，用于获得输入数据
     _captureDeviceInput = [[AVCaptureDeviceInput alloc]initWithDevice:captureDevice error:&error];
@@ -629,39 +710,12 @@ typedef void(^PropertyChangeBlock) (AVCaptureDevice * captureDevice);
     //根据连接取得设备输出的数据
     if (![self.captureMovieFileOutPut isRecording]) {
         
-        if (!_isPauseRecording) {
-            
-            if (_timer != nil) {
-                
-                [_timer setFireDate:[NSDate distantFuture]];
-            }
-            
-            _isPauseRecording = YES;
-            
-        }
-        else
-        {
-            [self startRecording:captureConnection];
-        }
+        [self startRecording:captureConnection];
         
     }
     else{
         
-        if (_isPauseRecording) {
-            
-            if (_timer != nil) {
-                
-                [_timer setFireDate:[NSDate date]];
-            }
-            
-            _isPauseRecording = NO;
-            
-        }
-        else
-        {
-            [self stopRecording];
-        }
-        
+        [self stopRecording];
         
     }
 }
@@ -680,25 +734,27 @@ typedef void(^PropertyChangeBlock) (AVCaptureDevice * captureDevice);
     else
     {
         // 计算递减量
-        CGFloat reduceLength = ScreenWith * 1.0 / _recordingTime;
-        
-        CGRect oldFrame = _progressLine.frame;
-        
-        CGFloat oldLength = _progressLine.frame.size.width;
-        
-        [UIView animateWithDuration:1.0 delay:0.0 options:UIViewAnimationOptionCurveLinear animations:^{
-            
-            _progressLine.frame = CGRectMake(0, ScreenHeight-86, oldLength - reduceLength, oldFrame.size.height);
-            
-            _progressLine.center = CGPointMake(self.view.bounds.size.width / 2.0, _progressLine.frame.size.height / 2.0);
-            
-        } completion:^(BOOL finished) {
-            
-            
-            
-        }];
-        
+//        CGFloat reduceLength = ScreenWith * 1.0 / _recordingTime;
+//        
+//        CGRect oldFrame = _progressLine.frame;
+//        
+//        CGFloat oldLength = _progressLine.frame.size.width;
+//        
+//        [UIView animateWithDuration:1.0 delay:0.0 options:UIViewAnimationOptionCurveLinear animations:^{
+//            
+//            _progressLine.frame = CGRectMake(0, ScreenHeight-86, oldLength - reduceLength, oldFrame.size.height);
+//            
+//            _progressLine.center = CGPointMake(self.view.bounds.size.width / 2.0, _progressLine.frame.size.height / 2.0);
+//            
+//        } completion:^(BOOL finished) {
+//            
+//            
+//            
+//        }];
+//        
         _countDown--;
+        
+        self.topTimeLabel.text = [NSString stringWithFormat:@"00:%ld - 00:%ld", _recordingTime - _countDown,_countDown];
     }
 }
 
@@ -707,9 +763,11 @@ typedef void(^PropertyChangeBlock) (AVCaptureDevice * captureDevice);
     
     _countDown = _recordingTime;
     
-    _progressLine.frame = CGRectMake(0, 0, ScreenWith, 4);
-    _progressLine.backgroundColor = [UIColor colorWithRed:0.52 green:0.84 blue:0.35 alpha:1.00];
-    _progressLine.hidden = NO;
+//    _progressLine.frame = CGRectMake(0, 0, ScreenWith, 4);
+//    _progressLine.backgroundColor = [UIColor colorWithRed:0.52 green:0.84 blue:0.35 alpha:1.00];
+//    _progressLine.hidden = NO;
+    
+    [self.videoButton setImage:[UIImage imageNamed:@"pauseRecord"] forState:UIControlStateNormal];
     
     if (_timer == nil) {
         
@@ -721,8 +779,8 @@ typedef void(^PropertyChangeBlock) (AVCaptureDevice * captureDevice);
         
     }
     
-    self.videoButton.backgroundColor = [UIColor redColor];
-    [self.videoButton setTitle:@"暂停" forState:UIControlStateNormal];
+//    self.videoButton.backgroundColor = [UIColor redColor];
+//    [self.videoButton setTitle:@"暂停" forState:UIControlStateNormal];
     
     //如果支持多任务则则开始多任务
     if ([[UIDevice currentDevice] isMultitaskingSupported]) {
@@ -730,7 +788,10 @@ typedef void(^PropertyChangeBlock) (AVCaptureDevice * captureDevice);
     }
     //预览图层和视频方向保持一致
     captureConnection.videoOrientation=[self.captureVideoPreviewLayer connection].videoOrientation;
-    NSString *outputFielPath=[NSTemporaryDirectory() stringByAppendingString:@"myMovie.mov"];
+//    NSString *outputFielPath=[NSTemporaryDirectory() stringByAppendingString:@"myMovie.mov"];
+
+    
+    NSString *outputFielPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).lastObject stringByAppendingPathComponent:@"录制的视频.mov"];
     NSLog(@"save path is :%@",outputFielPath);
     NSURL *fileUrl=[NSURL fileURLWithPath:outputFielPath];
     [self.captureMovieFileOutPut startRecordingToOutputFileURL:fileUrl recordingDelegate:self];
@@ -738,10 +799,63 @@ typedef void(^PropertyChangeBlock) (AVCaptureDevice * captureDevice);
 
 - (void)stopRecording
 {
+    // 录制结束
+    if (_countDown == 0) {
+        
+        [self.captureMovieFileOutPut stopRecording];//停止录制
+        
+        // 页面跳转 - 获取录制视频路径
+        NSString *outputFielPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).lastObject stringByAppendingPathComponent:@"录制的视频.mov"];
+        
+        DoublePlayerVC *doubleVC = [[DoublePlayerVC alloc] init];
+        
+        doubleVC.leftUrl = _leftUrl;
+        
+        [self.navigationController pushViewController:doubleVC animated:YES];
+    }
+    else
+    {
+        // 主动打断录制
+        [self.videoButton removeFromSuperview];
+        
+        [self.captureMovieFileOutPut stopRecording];//停止录制
+        
+        // 删除存储的视频
+        NSString *outputFielPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).lastObject stringByAppendingPathComponent:@"录制的视频.mov"];
+        
+        UIButton *backForward = [self createCustomButtonWithName:nil];
+        
+        backForward.frame = CGRectMake(93, 0, 98, 90);
+        
+        [backForward setImage:[UIImage imageNamed:@"closeCurront"] forState:UIControlStateNormal];
+        
+        [backForward addTarget:self action:@selector(didClickedGoBackForward) forControlEvents:UIControlEventTouchUpInside];
+        
+        [self.bottomView addSubview:backForward];
+        
+        UIButton *rephotograph = [self createCustomButtonWithName:nil];
+        
+        rephotograph.frame = CGRectMake(173, 0, 98, 90);
+        
+        [rephotograph setImage:[UIImage imageNamed:@"rephotograph"] forState:UIControlStateNormal];
+        
+        [rephotograph addTarget:self action:@selector(didClickedRephotograph) forControlEvents:UIControlEventTouchUpInside];
+        
+        [self.bottomView addSubview:rephotograph];
+    }
     
-    self.videoButton.backgroundColor = [UIColor orangeColor];
-    [self.videoButton setTitle:@"开始" forState:UIControlStateNormal];
-    [self.captureMovieFileOutPut stopRecording];//停止录制
+}
+
+- (void)didClickedGoBackForward{
+    
+    // 跳回去
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)didClickedRephotograph
+{
+    // 重新录制
+    [self startTimer];
 }
 
 - (UIView *)contentView{
@@ -757,13 +871,36 @@ typedef void(^PropertyChangeBlock) (AVCaptureDevice * captureDevice);
     
     [button setTitle:name forState:UIControlStateNormal];
     
-    button.backgroundColor = [UIColor orangeColor];
+//    button.backgroundColor = [UIColor orangeColor];
     
-    button.layer.cornerRadius = 30;
+//    button.layer.cornerRadius = 30;
     
     button.layer.masksToBounds = YES;
     
     return button;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+}
+
+/**
+ *  强制改变屏幕方向
+ */
+- (void)changeOrientation:(UIInterfaceOrientation)senderOrientation
+{
+    if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
+        SEL selector             = NSSelectorFromString(@"setOrientation:");
+        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[UIDevice instanceMethodSignatureForSelector:selector]];
+        [invocation setSelector:selector];
+        [invocation setTarget:[UIDevice currentDevice]];
+        int val                  = senderOrientation;
+        // 从2开始是因为0 1 两个参数已经被selector和target占用
+        [invocation setArgument:&val atIndex:2];
+        [invocation invoke];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

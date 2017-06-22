@@ -24,10 +24,15 @@
 
 - (void)initUI
 {
-    _lockBtn.layer.cornerRadius = _lockBtn.frame.size.width / 2.0;
     
-    _progressBar.maximumTrackTintColor = [UIColor colorWithRed:0.83 green:0.83 blue:0.83 alpha:0.00];
-    _progressBar.minimumTrackTintColor = [UIColor colorWithRed:0.99 green:0.75 blue:0.18 alpha:1.00];
+    // 设置UISlider
+    _progressBar.maximumTrackTintColor = [UIColor colorWithRed:0.33 green:0.33 blue:0.33 alpha:1.00];
+    _progressBar.minimumTrackTintColor = [UIColor colorWithRed:0.22 green:0.89 blue:0.99 alpha:1.00];
+    
+    [_progressBar setThumbImage:[UIImage imageNamed:@"sliderBtn"] forState:UIControlStateNormal];
+    
+//    [_progressBar setMinimumTrackImage:[UIImage imageNamed:@"progressLeft"] forState:UIControlStateNormal];
+    
     
     _playerProgressView.progressTintColor = [UIColor colorWithRed:0.38 green:0.69 blue:0.89 alpha:1.00];
 }

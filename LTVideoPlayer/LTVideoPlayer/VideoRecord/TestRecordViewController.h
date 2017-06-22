@@ -10,4 +10,6 @@
 
 @interface TestRecordViewController : UIViewController
 
+@property (nonatomic, copy) NSString *leftUrl;
+
 @end

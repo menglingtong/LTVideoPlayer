@@ -37,6 +37,8 @@
 /** 倒计时进度 */
 @property (weak, nonatomic) IBOutlet UISlider *progressView;
 
+/** 进入录制阶段 */
+@property (weak, nonatomic) IBOutlet UIButton *goRecordBtn;
 
 
 @end
