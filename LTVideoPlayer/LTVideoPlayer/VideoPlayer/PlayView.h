@@ -59,7 +59,7 @@ typedef NS_ENUM(NSUInteger, VideoControl) {
 // 播放器方向控制
 typedef NS_ENUM(NSUInteger, VideoOrientation) {
     VideoOrientationPortrait,   // 竖屏模式
-    VideoOrientationLeft,       // 横屏模式
+    VideoOrientationRight,      // 横屏模式:home键在右侧
 };
 
 #define kBaseControl @"BaseControl"

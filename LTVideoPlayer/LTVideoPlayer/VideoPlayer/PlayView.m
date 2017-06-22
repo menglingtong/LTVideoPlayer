@@ -68,6 +68,12 @@
             
         }
         
+        if (!_videoOrientation) {
+            
+            self.videoOrientation = VideoOrientationRight; //  默认启动横屏
+            
+        }
+        
     }
     
     return self;
@@ -716,6 +722,60 @@
     }
 }
 
+
+/**
+ *  自定义旋转视图
+ *
+ *  @param orientation 视图方向
+ */
+- (void)changeOrientationByMe:(VideoOrientation)orientation
+{
+    switch (orientation) {
+        case VideoOrientationPortrait: // 修改为树屏模式
+        {
+            self.transform = CGAffineTransformIdentity;
+            [self setFrame:_tmpRect];
+//            [self setFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
+        }
+            
+            break;
+        case VideoOrientationRight:    // 修改为横屏模式
+        {
+            
+            self.transform = CGAffineTransformMakeRotation(90 * M_PI / 180.0);
+
+            [self setFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
+            
+        }
+            
+            break;
+            
+        default:
+            break;
+    }
+}
+
+/**
+ *  获取旋转动画
+ *
+ *  @return 旋转动画
+ */
+- (CABasicAnimation *)getAnimation
+{
+    CABasicAnimation *roation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"]; //"z"还可以是“x”“y”，表示沿z轴旋转
+    
+    roation.toValue = [NSNumber numberWithFloat:M_PI_2];
+    
+    roation.duration = .1f;
+    
+    roation.removedOnCompletion = NO;
+    
+    roation.fillMode = kCAFillModeForwards;
+    
+    return roation;
+}
+
+
 /**
  *  时间转换为显示的格式
  */
@@ -906,14 +966,17 @@
         
         // 从非全屏状态进入全屏状态
         [self.baseControl.fullScreenBtn setImage:[UIImage imageNamed:@"playerExitFullScreen"] forState:UIControlStateNormal];
-        [self changeOrientation:UIInterfaceOrientationLandscapeRight];
-        [self setFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
+        
+//        [self changeOrientation:UIInterfaceOrientationLandscapeRight];
+        
+        [self changeOrientationByMe:VideoOrientationRight];
+        
     }else{
         
         // 从全屏状态进入非全屏状态
         [self.baseControl.fullScreenBtn setImage:[UIImage imageNamed:@"playerFullScreen"] forState:UIControlStateNormal];
-        [self changeOrientation:UIInterfaceOrientationPortrait];
-        [self setFrame:_tmpRect];
+//        [self changeOrientation:UIInterfaceOrientationPortrait];
+        [self changeOrientationByMe:VideoOrientationPortrait];
     }
 }
 
@@ -1062,6 +1125,7 @@
 
 /**
  *  屏幕方向监测
+ *  暂时禁用
  */
 - (void)deviceOrientationChange
 {
@@ -1070,26 +1134,34 @@
     switch (interfaceOrientation) {
         case UIInterfaceOrientationPortrait:{
             
-            self.baseControl.fullScreenBtn.selected = NO;
+//            self.baseControl.fullScreenBtn.selected = NO;
+//            
+//            [self setFrame:_tmpRect];
+//            
+//            self.baseControl.backBtn.hidden = NO;
             
-            [self setFrame:_tmpRect];
-            
-            self.baseControl.backBtn.hidden = NO;
+            // 屏幕竖直方向
+            [self changeOrientationByMe:VideoOrientationPortrait];
             
         }
             break;
         case UIInterfaceOrientationLandscapeLeft:{
             
-            self.baseControl.fullScreenBtn.selected = YES;
-            [self setFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
-            self.baseControl.backBtn.hidden = NO;
+//            self.baseControl.fullScreenBtn.selected = YES;
+//            [self setFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
+//            self.baseControl.backBtn.hidden = NO;
+            
+            // 左侧不支持
             
         }
             break;
         case UIInterfaceOrientationLandscapeRight:{
-            self.baseControl.fullScreenBtn.selected = YES;
-            [self setFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
-            self.baseControl.backBtn.hidden = NO;
+//            self.baseControl.fullScreenBtn.selected = YES;
+//            [self setFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
+//            self.baseControl.backBtn.hidden = NO;
+            
+            // 右侧支持
+            [self changeOrientationByMe:VideoOrientationRight];
             
         }
             break;
@@ -1257,15 +1329,16 @@
     }
     
     switch (_videoOrientation) {
-        case 0:
+        case VideoOrientationPortrait:
             
             
             break;
             
-        case 1:
+        case VideoOrientationRight:
         {
-            [self changeOrientation:UIInterfaceOrientationLandscapeLeft];
-            [self setFrame:CGRectMake(0, 0, SCREEN_HEIGHT, SCREEN_WIDTH)];
+//            [self changeOrientation:UIInterfaceOrientationLandscapeRight];
+            [self changeOrientationByMe:videoOrientation];
+            
         }
             
             break;
