@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina5_5" orientation="landscape">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DoubleControl">
+            <connections>
+                <outlet property="play" destination="fqV-4R-X8s" id="Tza-tm-1l7"/>
+                <outlet property="reRecord" destination="aEF-rf-sqA" id="1XA-BV-HPt"/>
+                <outlet property="save" destination="6ls-9I-0VY" id="6dS-fC-dxr"/>
+                <outlet property="slow" destination="hfF-jE-MvG" id="ifP-2w-dp6"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="736" height="414"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hgF-Vi-ptl">
+                    <rect key="frame" x="521" y="0.0" width="215" height="414"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="215" id="K2D-ss-R2v"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gI8-Lp-AW5">
+                    <rect key="frame" x="0.0" y="314" width="521" height="100"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fqV-4R-X8s">
+                            <rect key="frame" x="41" y="14.666666666666686" width="93" height="93"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="93" id="Fw5-I5-Dvh"/>
+                                <constraint firstAttribute="height" constant="93" id="hpv-mq-5bk"/>
+                            </constraints>
+                            <state key="normal" image="doublePlayerPause">
+                                <color key="titleColor" red="0.019547004252672195" green="0.023840146139264107" blue="0.0072414013557136059" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6ls-9I-0VY">
+                            <rect key="frame" x="346" y="44" width="24" height="24"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="24" id="cKc-6m-QEz"/>
+                                <constraint firstAttribute="width" constant="24" id="ea4-E4-OJY"/>
+                            </constraints>
+                            <state key="normal" image="doublePlayerBack">
+                                <color key="titleColor" red="0.019547004252672195" green="0.023840146139264107" blue="0.0072414013557136059" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aEF-rf-sqA">
+                            <rect key="frame" x="438" y="44" width="24" height="24"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="24" id="UQ8-rG-gnO"/>
+                                <constraint firstAttribute="width" constant="24" id="ieh-yf-Fr3"/>
+                            </constraints>
+                            <state key="normal" image="doublePlayerRephotograph">
+                                <color key="titleColor" red="0.019547004252672195" green="0.023840146139264107" blue="0.0072414013557136059" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hfF-jE-MvG">
+                            <rect key="frame" x="253" y="44" width="24" height="24"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="24" id="cDj-rB-Lxr"/>
+                                <constraint firstAttribute="width" constant="24" id="mRw-yg-0XV"/>
+                            </constraints>
+                            <state key="normal" image="doublePlayerSpeed">
+                                <color key="titleColor" red="0.019547004252672195" green="0.023840146139264107" blue="0.0072414013557136059" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" red="0.055529095232486725" green="0.13282039761543274" blue="0.17039835453033447" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="hfF-jE-MvG" secondAttribute="bottom" constant="32" id="1Aa-lu-43s"/>
+                        <constraint firstItem="aEF-rf-sqA" firstAttribute="leading" secondItem="6ls-9I-0VY" secondAttribute="trailing" constant="68" id="ATc-6Y-5dO"/>
+                        <constraint firstAttribute="trailing" secondItem="aEF-rf-sqA" secondAttribute="trailing" constant="59" id="Bcu-rl-ubi"/>
+                        <constraint firstAttribute="bottom" secondItem="aEF-rf-sqA" secondAttribute="bottom" constant="32" id="N4f-17-3Ez"/>
+                        <constraint firstAttribute="bottom" secondItem="6ls-9I-0VY" secondAttribute="bottom" constant="32" id="SMT-7R-MQn"/>
+                        <constraint firstItem="6ls-9I-0VY" firstAttribute="leading" secondItem="hfF-jE-MvG" secondAttribute="trailing" constant="69" id="VFp-cN-hmD"/>
+                        <constraint firstAttribute="height" constant="100" id="fEL-sE-q3T"/>
+                        <constraint firstAttribute="bottom" secondItem="fqV-4R-X8s" secondAttribute="bottom" constant="-7.5" id="fqx-Ys-bCy"/>
+                        <constraint firstItem="fqV-4R-X8s" firstAttribute="leading" secondItem="gI8-Lp-AW5" secondAttribute="leading" constant="41" id="rm3-pC-hTW"/>
+                    </constraints>
+                </view>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="topView" translatesAutoresizingMaskIntoConstraints="NO" id="v5a-uA-L3E">
+                    <rect key="frame" x="0.0" y="0.0" width="736" height="41"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="41" id="HmE-I2-sK0"/>
+                    </constraints>
+                </imageView>
+            </subviews>
+            <constraints>
+                <constraint firstItem="v5a-uA-L3E" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="7x7-Aj-RM3"/>
+                <constraint firstAttribute="bottom" secondItem="gI8-Lp-AW5" secondAttribute="bottom" id="8eO-tB-epr"/>
+                <constraint firstAttribute="trailing" secondItem="v5a-uA-L3E" secondAttribute="trailing" id="8xa-WK-G7y"/>
+                <constraint firstItem="hgF-Vi-ptl" firstAttribute="leading" secondItem="gI8-Lp-AW5" secondAttribute="trailing" id="Cp8-JR-t49"/>
+                <constraint firstAttribute="trailing" secondItem="hgF-Vi-ptl" secondAttribute="trailing" id="Y2T-aB-fqo"/>
+                <constraint firstItem="hgF-Vi-ptl" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="fZz-8L-odQ"/>
+                <constraint firstAttribute="bottom" secondItem="hgF-Vi-ptl" secondAttribute="bottom" id="gyf-70-nhE"/>
+                <constraint firstItem="gI8-Lp-AW5" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="hAr-Nh-j8X"/>
+                <constraint firstItem="v5a-uA-L3E" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="jtA-O4-3MW"/>
+            </constraints>
+            <point key="canvasLocation" x="32.5" y="65.5"/>
+        </view>
+        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="CXa-9h-eOV">
+            <rect key="frame" x="0.0" y="0.0" width="46" height="30"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <state key="normal" title="Button"/>
+        </button>
+    </objects>
+    <resources>
+        <image name="doublePlayerBack" width="18" height="18"/>
+        <image name="doublePlayerPause" width="81" height="79"/>
+        <image name="doublePlayerRephotograph" width="18" height="18"/>
+        <image name="doublePlayerSpeed" width="20" height="21"/>
+        <image name="topView" width="667" height="64"/>
+    </resources>
+</document>
