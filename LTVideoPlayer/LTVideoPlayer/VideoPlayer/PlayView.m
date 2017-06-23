@@ -8,6 +8,8 @@
 
 #import "PlayView.h"
 
+#import <MBProgressHUD.h>
+
 #define SCREEN_WIDTH [UIScreen mainScreen].bounds.size.width
 
 #define SCREEN_HEIGHT [UIScreen mainScreen].bounds.size.height
@@ -29,6 +31,18 @@
 
 /** 是否翻转 默认NO */
 @property (nonatomic, assign) BOOL isRotation;
+
+/** 剪切计时器 */
+@property (nonatomic, strong) NSTimer *cutTimer;
+
+/** 剪切时间长度 */
+@property (nonatomic, assign) NSInteger cutTimerDuration;
+
+/** 倒计时 */
+@property (nonatomic, assign) NSInteger countDown;
+
+/** 提示层 */
+@property (nonatomic, strong) MBProgressHUD *cutHUD;
 
 @end
 
@@ -60,6 +74,7 @@
         
         _tmpRect             = frame;    // 初始尺寸
         _isRotation          = NO;       // 是否镜像：默认 NO
+        _cutTimerDuration    = 15;		 // 时长15秒
         
         // 设置默认控制层
         if (!_videoControl) {
@@ -817,6 +832,194 @@
     return result;
 }
 
+
+/**
+ *  设置剪切计时
+ */
+- (void)startUpCutTimer
+{
+    self.countDown = _cutTimerDuration;
+    
+    self.baseControl.cutProgressBack.alpha = 1;
+    self.baseControl.cutProgressFront.alpha = 1;
+    
+    [self cutAnimationHide];
+    
+    __weak __typeof(self)weakSelf = self;
+    
+    
+    _cutTimer = [NSTimer timerWithTimeInterval:1.0 repeats:YES block:^(NSTimer * _Nonnull timer) {
+        
+        __strong __typeof(weakSelf)strongSelf = weakSelf;
+        
+        if (_countDown > 0 && _countDown <= 15) {
+            
+            if (_countDown > 15 - 3) {
+                // 时间小于3秒不能截取
+                if (!_cutHUD) {
+                    
+                    _cutHUD = [MBProgressHUD showHUDAddedTo:strongSelf.baseControl.view animated:YES];
+                    _cutHUD.label.text = @"时间不足三秒，无法录制";
+                    
+                    _cutHUD.mode = MBProgressHUDModeText;
+                    
+                    _cutHUD.bezelView.backgroundColor = [UIColor clearColor];
+                    
+                    _cutHUD.label.textColor = [UIColor whiteColor];
+                    
+                    _cutHUD.offset = CGPointMake(0.f, -MBProgressMaxOffset);
+                }
+                
+            }
+            else if((_countDown <= 15 - 3) && _countDown > 5)
+            {
+                // 3 - 5秒之间，不显示提示语
+                _cutHUD = nil;
+                
+                [MBProgressHUD hideHUDForView:strongSelf.baseControl.view animated:YES];
+                
+                strongSelf.baseControl.cutProgressFront.backgroundColor = [UIColor colorWithRed:0.30 green:0.99 blue:0.90 alpha:1.00];
+            }
+            else if (_countDown <=5 && _countDown > 0)
+            {
+                // 时间只剩5秒
+                if (!_cutHUD) {
+                    
+                    _cutHUD = [MBProgressHUD showHUDAddedTo:strongSelf.baseControl.view animated:YES];
+                    _cutHUD.label.text = @"您还可以录制5秒";
+                    
+                    _cutHUD.mode = MBProgressHUDModeText;
+                    
+                    _cutHUD.bezelView.backgroundColor = [UIColor clearColor];
+                    
+                    _cutHUD.label.textColor = [UIColor whiteColor];
+                    
+                    _cutHUD.offset = CGPointMake(0.f, -MBProgressMaxOffset);
+                }
+                
+            }
+            
+            
+            // 计算递减量
+            CGFloat reduceLength = SCREEN_HEIGHT * 1.0 / _cutTimerDuration;
+
+            CGRect oldFrame = weakSelf.baseControl.cutProgressFront.frame;
+
+            CGFloat oldLength = weakSelf.baseControl.cutProgressFront.frame.size.width;
+
+            [UIView animateWithDuration:1.0 delay:0.0 options:UIViewAnimationOptionCurveLinear animations:^{
+
+                strongSelf.baseControl.cutProgressFront.frame = CGRectMake(0, 0, oldLength + reduceLength, oldFrame.size.height);
+
+                strongSelf.baseControl.cutProgressFront.center = CGPointMake(self.bounds.size.width / 2.0, weakSelf.baseControl.cutProgressFront.frame.size.height / 2.0);
+                
+            } completion:^(BOOL finished) {
+                
+                
+                
+            }];
+            
+            
+        }
+        else if(_countDown == 0){
+            
+            // 时间等于0秒，达到最长时长
+            [self shutDownCutTimer];
+            
+            // 时间达到最大，自动调用剪切B点方法
+            [self didClickedCutBPointButton:self.baseControl.cutBtn];
+            
+            // 关闭剪切按钮点击事件，重复点击
+            self.baseControl.cutBtn.userInteractionEnabled = NO;
+            
+        }
+        
+        _countDown--;
+        
+    }];
+    
+    [[NSRunLoop currentRunLoop] addTimer:_cutTimer forMode:NSRunLoopCommonModes];
+    
+    [_cutTimer fire];
+}
+
+
+/**
+ *  停止剪切计时，重置计时
+ */
+- (void)shutDownCutTimer
+{
+    [_cutTimer invalidate];
+    
+    _cutTimer = nil;
+    
+    [_cutHUD hideAnimated:YES];
+    
+    _cutHUD = nil;
+    // 重置进度条
+    self.baseControl.cutProgressBack.alpha = 0;
+    self.baseControl.cutProgressFront.alpha = 0;
+    self.baseControl.cutProgressFront.frame = CGRectMake(0, 0, 1, 3);
+    self.baseControl.cutProgressFront.center = CGPointMake(self.bounds.size.width / 2.0, self.baseControl.cutProgressFront.frame.size.height / 2.0);
+    
+    [self cutAnimationShow];
+
+}
+
+
+/**
+ *  剪切视频隐藏控制层
+ */
+- (void)cutAnimationHide
+{
+    [UIView animateWithDuration:.5f animations:^{
+        
+        self.baseControl.topBackView.alpha = 0;
+        self.baseControl.bottomBackView.alpha = 0;
+        
+        self.baseControl.lockBtn.alpha = 0;
+        
+        self.baseControl.mirrorBtn.transform = CGAffineTransformMakeTranslation(0, -40);
+        
+        self.baseControl.mirrorBtn.alpha = 0;
+        
+        self.baseControl.slowBtn.transform = CGAffineTransformMakeTranslation(0, 40);
+        
+        self.baseControl.slowBtn.alpha = 0;
+        
+    } completion:^(BOOL finished) {
+        
+        
+    }];
+}
+
+
+/**
+ *  剪切视频结束显示控制层
+ */
+- (void)cutAnimationShow
+{
+    [UIView animateWithDuration:.5f animations:^{
+        
+        self.baseControl.topBackView.alpha = 1;
+        self.baseControl.bottomBackView.alpha = 1;
+        
+        self.baseControl.lockBtn.alpha = 1;
+        
+        self.baseControl.mirrorBtn.transform = CGAffineTransformIdentity;
+        
+        self.baseControl.mirrorBtn.alpha = 1;
+        
+        self.baseControl.slowBtn.transform = CGAffineTransformIdentity;
+        
+        self.baseControl.slowBtn.alpha = 1;
+        
+    } completion:^(BOOL finished) {
+        
+        
+    }];
+}
+
 #pragma mark - 控制层按钮点击事件
 /**
  *  播放按钮点击方法
@@ -830,13 +1033,13 @@
     if (button.selected) {
         
         // 从播放状态转入暂停状态
-        [button setImage:[UIImage imageNamed:@"play"] forState:UIControlStateNormal];
+        [button setImage:[UIImage imageNamed:@"clickPlay"] forState:UIControlStateNormal];
         [self pause];
         
     } else {
         
         // 从暂停状态转入播放状态
-        [button setImage:[UIImage imageNamed:@"pause"] forState:UIControlStateNormal];
+        [button setImage:[UIImage imageNamed:@"clickPause"] forState:UIControlStateNormal];
         [self play];
     }
 }
@@ -850,6 +1053,11 @@
 - (void)didClickedBackButton:(UIButton *)button
 {
     //    NSLog(@"返回！返回！");
+    if ([self.delegate respondsToSelector:@selector(popBack)]) {
+        
+        [self.delegate popBack];
+    }
+    
 }
 
 - (void)didClickedGoRecordButton:(UIButton *)button
@@ -911,7 +1119,8 @@
     //    NSLog(@"获取A点时间");
     _aTime =  self.player.currentTime.value / self.player.currentTime.timescale;
     
-    //    NSLog(@"当前时间为A时间 ： %f", _aTime);
+    // 开启时间监控NSTimer
+    [self startUpCutTimer];
 }
 
 /**
@@ -928,6 +1137,9 @@
     
     CGFloat cutTime = _bTime - _aTime;
     
+    // 按钮抬起或自动调用，就关闭计时
+    [self shutDownCutTimer];
+    
     // 三秒以内不截取
     if (cutTime < 3.0f) {
         
@@ -936,6 +1148,8 @@
     else
     {
         [self cutVideoFromApointToBpoint];
+        
+        
     }
 }
 
@@ -944,11 +1158,15 @@
  */
 - (void)cutVideoFromApointToBpoint
 {
-    if ([self.delegate respondsToSelector:@selector(ABcutFunctionWithATime:andBTime:andVideo:)]) {
+    if ([self.delegate respondsToSelector:@selector(ABcutFunctionWithATime:andBTime:andVideo:complete:)]) {
         
         NSLog(@"当前视频名字：%@", _videoName);
         
-        [self.delegate ABcutFunctionWithATime:[NSString stringWithFormat:@"%.0f",_aTime] andBTime:[NSString stringWithFormat:@"%.0f", _bTime] andVideo:_videoName];
+        [self.delegate ABcutFunctionWithATime:[NSString stringWithFormat:@"%.0f",_aTime] andBTime:[NSString stringWithFormat:@"%.0f", _bTime] andVideo:_videoName complete:^(BOOL isReplace) {
+            
+            _baseControl.cutBtn.userInteractionEnabled = isReplace;
+            
+        }];
         
     }
 }

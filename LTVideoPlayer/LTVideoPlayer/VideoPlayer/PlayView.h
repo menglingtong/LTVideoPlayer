@@ -67,15 +67,23 @@ typedef NS_ENUM(NSUInteger, VideoOrientation) {
 #define kLoopControl @"LoopControl"
 
 
+/**
+ *  是否恢复剪切按钮状态
+ *
+ *  @param isReplace YES：恢复 NO:不恢复
+ */
+typedef void(^cutBtnBlock)(BOOL isReplace);
 
 @protocol PlayViewDelegate <NSObject>
 
 @required
-- (void)ABcutFunctionWithATime:(NSString *)aTime andBTime:(NSString *)bTime andVideo:(NSString *)video;
+- (void)ABcutFunctionWithATime:(NSString *)aTime andBTime:(NSString *)bTime andVideo:(NSString *)video complete:(cutBtnBlock)complete;
 
 - (void)goRecordVC;
 
 - (void)playerStatusDidChange:(LTPlayerState)status;
+
+- (void)popBack;
 
 @end
 

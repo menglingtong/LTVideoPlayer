@@ -57,6 +57,11 @@
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
+@property (weak, nonatomic) IBOutlet UIView *cutProgressBack;
+
+@property (weak, nonatomic) IBOutlet UIView *cutProgressFront;
+
+
 /** 显示控制层 */
 - (void) showControlView;
 

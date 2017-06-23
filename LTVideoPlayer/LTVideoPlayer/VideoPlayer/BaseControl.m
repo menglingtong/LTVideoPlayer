@@ -35,6 +35,19 @@
     
     
     _playerProgressView.progressTintColor = [UIColor colorWithRed:0.38 green:0.69 blue:0.89 alpha:1.00];
+    
+    // 设置剪切进度条
+    // 背景条
+    _cutProgressBack.backgroundColor = [UIColor colorWithRed:58/255.0 green:56/255.0 blue:53/255.0 alpha:1/1.0];
+    
+    _cutProgressBack.alpha = 0;
+    
+    // 前端进度条
+    _cutProgressFront.backgroundColor = [UIColor colorWithRed:0.14 green:0.79 blue:0.99 alpha:1.00];
+    
+    _cutProgressFront.alpha = 0;
+    
+    
 }
 
 -(void)showControlView
